@@ -1,0 +1,52 @@
+{
+  "name": "gwt-runner",
+  "version": "1.0.0",
+  "description": "A small library to help Jest support given-when-then style testing without a bunch of overhead",
+  "main": "lib/index.js",
+  "files": [
+    "lib/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "jest ./src ./examples",
+    "test:coverage": "npm run test -- --coverage",
+    "prepublishOnly": "npm run build && npm run test:coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devzeebo/gwt-runner.git"
+  },
+  "keywords": [
+    "gwt",
+    "unit",
+    "testing",
+    "bdd",
+    "given",
+    "when",
+    "then"
+  ],
+  "author": "Eric Siebeneich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devzeebo/gwt-runner/issues"
+  },
+  "homepage": "https://github.com/devzeebo/gwt-runner#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@jest/globals": "^26.1.0",
+    "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-lodash": "^7.1.0",
+    "eslint-watch": "^7.0.0",
+    "jest": "^25.1.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.19"
+  }
+}
