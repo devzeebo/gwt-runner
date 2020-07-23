@@ -1,7 +1,0 @@
-.babelrc.js
-.eslintrc.js
-.gitignore
-*.spec.js
-.git/
-.vscode/
-src/examples*
