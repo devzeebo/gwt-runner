@@ -1,17 +1,17 @@
 module.exports = {
   root: true,
   extends: [
-    'airbnb/base',
+    'airbnb-base',
     'plugin:lodash/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
   ],
   parser: 'babel-eslint',
-  env: {
-    'jest/globals': true,
-  },
   overrides: [{
     files: ['**/*.spec.js'],
+    env: {
+      jest: true,
+    },
     rules: {
       camelcase: 'off',
       'prefer-arrow-callback': 'off',
