@@ -1,9 +1,15 @@
 import {
-  flow, values, merge, pick, omit, curry,
+  flow, values, merge, pick, omit, curry, keys,
 } from 'lodash/fp';
 import executeStep from './executeStep';
+import validateDefinition from './validateDefinition';
 
 export default curry((testFunc, name, gwtDefinition) => {
+  if (!validateDefinition(gwtDefinition)) {
+    throw new Error(`Invalid GWT definition. Valid keys are [given,when,then].
+Supplied keys were [${keys(gwtDefinition)}]`);
+  }
+
   const gwt = flow(
     pick(['given', 'when', 'then']),
     merge({

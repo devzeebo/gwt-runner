@@ -58,6 +58,19 @@ describe('test context', () => {
       expect_error: error_containing('oops!'),
     },
   });
+
+  test('invalid definition throws error', {
+    given: {
+      mock_jest_test_function,
+      INVALID_test_case,
+    },
+    when: {
+      executing_test_case,
+    },
+    then: {
+      expect_error: error_containing('Invalid GWT definition'),
+    },
+  });
 });
 
 //#region givens
@@ -112,6 +125,14 @@ function GOOD_test_case_WITH_expect_error() {
     then: {
       expect_error: noop,
     },
+  };
+}
+function INVALID_test_case() {
+  this.gwt_definition = {
+    given: {},
+    when: {},
+    then: {},
+    oops: {},
   };
 }
 //#endregion
