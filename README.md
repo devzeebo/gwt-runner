@@ -19,7 +19,7 @@ project. It is completely different. Don't get confused.
 
 1. Install your test library of choice (in this readme we'll use [Jest](https://www.npmjs.com/package/jest)
     ```bash
-    npm i -S jest-gwt
+    npm i --save-dev jest-gwt
     ```
 2. In your test files, import your test runner's test function from here
     ```js
