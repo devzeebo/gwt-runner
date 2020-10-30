@@ -1,6 +1,6 @@
 {
   "name": "gwt-runner",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A small library to help Jest support given-when-then style testing without a bunch of overhead",
   "main": "lib/index.js",
   "files": [
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "babel src -d lib",
-    "test": "jest ./src ./examples",
+    "test": "jest",
     "test:coverage": "npm run test -- --coverage",
     "prepublishOnly": "npm run build && npm run test:coverage"
   },
@@ -27,27 +27,27 @@
     "when",
     "then"
   ],
-  "author": "Eric Siebeneich",
+  "author": "Eric Siebeneich <eric.siebeneich@gmail.com> (https://github.com/devzeebo)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/devzeebo/gwt-runner/issues"
   },
   "homepage": "https://github.com/devzeebo/gwt-runner#readme",
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "@jest/globals": "^26.1.0",
-    "axios": "^0.19.2",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@jest/globals": "^26.6.1",
+    "axios": "^0.21.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.5.0",
+    "eslint": "^7.12.1",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-lodash": "^7.1.0",
     "eslint-watch": "^7.0.0",
-    "jest": "^25.1.0"
+    "jest": "^26.6.1"
   },
   "dependencies": {
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.20"
   }
 }

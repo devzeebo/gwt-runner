@@ -1,5 +1,8 @@
 import {
-  flow, keys, without, isEqual,
+  flow,
+  keys,
+  without,
+  isEqual,
 } from 'lodash/fp';
 
 export default flow(

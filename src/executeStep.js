@@ -1,4 +1,4 @@
-import reduce from 'lodash/fp/reduce';
+import { reduce } from 'lodash/fp';
 
 const executeStep = (context) => (funcs) => reduce(
   (previous, func) => previous.then(() => func.bind(context)()),

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export default email => axios.post('/api/validateEmail', {
+export default (email) => axios.post('/api/validateEmail', {
   email,
 })
-  .then(res => {
+  .then((res) => {
     if (res.data.success) {
       return Promise.resolve(true);
     }

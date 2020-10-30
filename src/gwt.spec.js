@@ -1,4 +1,7 @@
-import { noop, toLower } from 'lodash/fp';
+import {
+  noop,
+  toLower,
+} from 'lodash/fp';
 import { test as jestTest } from '@jest/globals';
 import gwtRunner from './gwt';
 
