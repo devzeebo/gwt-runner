@@ -28,12 +28,11 @@ Supplied keys were [${keys(gwtDefinition)}]`);
   )(gwtDefinition);
 
   return testFunc(name, async () => {
-    ContextProvider.spawnContext();
-    const context = ContextProvider.activeContext;
+    ContextProvider.createContext();
 
     const executeGwtStep = flow(
       values,
-      executeStep(context.context),
+      executeStep(ContextProvider.context),
     );
 
     await executeGwtStep(gwt.given);
@@ -49,7 +48,7 @@ Supplied keys were [${keys(gwtDefinition)}]`);
       if (!error) {
         throw new Error('Expected error to be thrown, but no error was thrown');
       }
-      await gwt.then.expect_error.bind(context.context)(error);
+      await gwt.then.expect_error.bind(ContextProvider.context)(error);
     } else if (error) {
       throw error;
     }
@@ -59,6 +58,6 @@ Supplied keys were [${keys(gwtDefinition)}]`);
       executeGwtStep,
     )(gwt.then);
 
-    ContextProvider.revertContext();
+    ContextProvider.releaseContext();
   });
 });

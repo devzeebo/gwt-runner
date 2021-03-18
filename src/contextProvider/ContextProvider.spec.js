@@ -73,17 +73,17 @@ function context_provider() {
 
 function context_provider_WITH_active_context() {
   this.context_provider = new ContextProvider();
-  this.context_provider.spawnContext();
+  this.context_provider.createContext();
 }
 
 function spawning_context() {
   this.previous_context = get('context_provider.activeContext', this);
-  this.context_provider.spawnContext();
+  this.context_provider.createContext();
 }
 
 function reverting_context() {
   this.previous_context = get('context_provider.activeContext', this);
-  this.context_provider.revertContext();
+  this.context_provider.releaseContext();
 }
 
 function active_context_EXISTS() {

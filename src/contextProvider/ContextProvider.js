@@ -6,7 +6,9 @@ export default class ContextProvider {
     this.activeContext = null;
   }
 
-  spawnContext = () => {
+  get context() { return this.activeContext.context; }
+
+  createContext = () => {
     if (!this.activeContext) {
       this.activeContext = new Context();
     } else {
@@ -14,7 +16,7 @@ export default class ContextProvider {
     }
   }
 
-  revertContext = () => {
+  releaseContext = () => {
     this.activeContext = get(this.activeContext, 'parent');
   }
 }
