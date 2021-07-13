@@ -1,10 +1,15 @@
-import { test as jestTest } from '@jest/globals';
+import {
+   test as jestTest,
+   describe,
+   expect,
+} from '@jest/globals';
 import executeStep from './executeStep';
 import gwtRunner from './gwt';
 
 const test = gwtRunner(jestTest);
 
-const timeout = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
+const timeout = (ms: number) => new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
+
 describe('execute step', () => {
   test('works with non-async functions', {
     given: {
@@ -59,14 +64,18 @@ describe('execute step', () => {
   });
 });
 
+type Execution = {
+  order: number,
+  context: any
+};
 //#region constants
-const makeFunc = (order, executions) => function () {
+const makeFunc = (order: number, executions: Execution[]) => function (this: any) {
   executions.push({
     order,
     context: this,
   });
 };
-const makeAsyncFunc = (order, ms, executions) => async function () {
+const makeAsyncFunc = (order: number, ms: number, executions: Execution[]) => async function (this: any) {
   await timeout(ms);
   executions.push({
     order,
@@ -76,11 +85,11 @@ const makeAsyncFunc = (order, ms, executions) => async function () {
 //#endregion
 
 //#region given
-function context() {
+function context(this: any) {
   this.context = {};
 }
-function NO_async_functions() {
-  const executions = [];
+function NO_async_functions(this: any) {
+  const executions = [] as Execution[];
 
   this.funcs = [
     makeFunc(1, executions),
@@ -89,8 +98,8 @@ function NO_async_functions() {
   ];
   this.executions = executions;
 }
-function ALL_async_functions() {
-  const executions = [];
+function ALL_async_functions(this: any) {
+  const executions = [] as Execution[];
 
   this.funcs = [
     makeAsyncFunc(1, 30, executions),
@@ -99,8 +108,8 @@ function ALL_async_functions() {
   ];
   this.executions = executions;
 }
-function MIXED_functions() {
-  const executions = [];
+function MIXED_functions(this: any) {
+  const executions = [] as Execution[];
 
   this.funcs = [
     makeFunc(1, executions),
@@ -112,18 +121,18 @@ function MIXED_functions() {
 //#endregion
 
 //#region whens
-async function executing_step() {
+async function executing_step(this: any) {
   await executeStep(this.context)(this.funcs);
 }
 //#endregion
 
 //#region thens
-function functions_execute_in_order() {
+function functions_execute_in_order(this: any) {
   expect(this.executions.length).toBe(3);
   expect(this.executions[0].order).toBeLessThan(this.executions[1].order);
   expect(this.executions[1].order).toBeLessThan(this.executions[2].order);
 }
-function context_is_bound_to_functions() {
+function context_is_bound_to_functions(this: any) {
   expect(this.executions.length).toBe(3);
   expect(this.executions[0].context).toBe(this.context);
   expect(this.executions[1].context).toBe(this.context);

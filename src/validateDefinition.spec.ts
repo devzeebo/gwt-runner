@@ -1,4 +1,8 @@
-import { test as jestTest, expect } from '@jest/globals';
+import {
+   test as jestTest,
+    expect,
+    describe,
+   } from '@jest/globals';
 import gwtRunner from './gwt';
 
 import validateDefinition from './validateDefinition';
@@ -67,22 +71,22 @@ describe('validate definition', () => {
   });
 });
 
-function definition_with_only_GIVEN() {
+function definition_with_only_GIVEN(this: any) {
   this.definition = {
     given: {},
   };
 }
-function definition_with_only_WHEN() {
+function definition_with_only_WHEN(this: any) {
   this.definition = {
     when: {},
   };
 }
-function definition_with_only_THEN() {
+function definition_with_only_THEN(this: any) {
   this.definition = {
     then: {},
   };
 }
-function complete_definition() {
+function complete_definition(this: any) {
   this.definition = {
     given: {},
     when: {},
@@ -90,7 +94,7 @@ function complete_definition() {
   };
 }
 
-function definition_with_EXTRA_KEYS() {
+function definition_with_EXTRA_KEYS(this: any) {
   this.definition = {
     given: {},
     when: {},
@@ -99,13 +103,13 @@ function definition_with_EXTRA_KEYS() {
   };
 }
 
-function validating_definition() {
+function validating_definition(this: any) {
   this.result = validateDefinition(this.definition);
 }
 
-function definition_is_valid() {
+function definition_is_valid(this: any) {
   expect(this.result).toBe(true);
 }
-function definition_is_INVALID() {
+function definition_is_INVALID(this: any) {
   expect(this.result).toBe(false);
 }

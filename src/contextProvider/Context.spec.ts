@@ -60,52 +60,52 @@ describe('Context', () => {
   });
 });
 
-function creating_context_WITHOUT_parent() {
+function creating_context_WITHOUT_parent(this: any) {
   this.context = new Context();
 }
 
-function context() {
+function context(this: any) {
   this.context = new Context();
 }
 
-function parent_is_FALSY() {
+function parent_is_FALSY(this: any) {
   expect(this.context.parent).toBeFalsy();
 }
 
-function context_WITH_parent() {
+function context_WITH_parent(this: any) {
   this.parent_context = new Context();
   this.context = new Context(this.parent_context);
 }
 
-function parent_context_has_value() {
+function parent_context_has_value(this: any) {
   this.parent_context.context.value = 'parent';
 }
 
-function setting_context_value() {
+function setting_context_value(this: any) {
   this.context.context.value = 'child';
 }
 
-function accessing_context_value() {
+function accessing_context_value(this: any) {
   this.result = this.context.context.value;
 }
 
-function getting_child_context() {
+function getting_child_context(this: any) {
   this.parent_context = this.context;
   this.context = this.parent_context.getChild();
 }
 
-function context_value_is_PARENT_VALUE() {
+function context_value_is_PARENT_VALUE(this: any) {
   expect(this.result).toBe('parent');
 }
 
-function context_value_is_CHILD_VALUE() {
+function context_value_is_CHILD_VALUE(this: any) {
   expect(this.result).toBe('child');
 }
 
-function parent_context_UNCHANGED() {
+function parent_context_UNCHANGED(this: any) {
   expect(this.parent_context.context.value).toBe('parent');
 }
 
-function child_context_has_parent() {
+function child_context_has_parent(this: any) {
   expect(this.context.parent).toBe(this.parent_context);
 }

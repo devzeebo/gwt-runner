@@ -1,8 +1,12 @@
 import {
+  test as jestTest,
+  describe,
+  expect,
+} from '@jest/globals';
+import {
   noop,
   toLower,
 } from 'lodash/fp';
-import { test as jestTest } from '@jest/globals';
 import gwtRunner from './gwt';
 
 const test = gwtRunner(jestTest);
@@ -77,11 +81,11 @@ describe('test context', () => {
 });
 
 //#region givens
-function mock_jest_test_function() {
-  this.mock_jest_func = async (_, func) => func();
+function mock_jest_test_function(this: any) {
+  this.mock_jest_func = async (_: string, func: () => any) => func();
 }
-function GOOD_test_case() {
-  const executions = [];
+function GOOD_test_case(this: any) {
+  const executions = [] as string[];
 
   this.gwt_definition = {
     given: {
@@ -100,8 +104,8 @@ function GOOD_test_case() {
 
   this.executions = executions;
 }
-function ERROR_test_case_WITH_expect_error() {
-  const executions = [];
+function ERROR_test_case_WITH_expect_error(this: any) {
+  const executions = [] as string[];
 
   this.gwt_definition = {
     when: {
@@ -114,7 +118,7 @@ function ERROR_test_case_WITH_expect_error() {
 
   this.executions = executions;
 }
-function ERROR_test_case_WITHOUT_expect_error() {
+function ERROR_test_case_WITHOUT_expect_error(this: any) {
   this.gwt_definition = {
     when: {
       oops() { throw new Error('Oops!'); },
@@ -123,14 +127,14 @@ function ERROR_test_case_WITHOUT_expect_error() {
     },
   };
 }
-function GOOD_test_case_WITH_expect_error() {
+function GOOD_test_case_WITH_expect_error(this: any) {
   this.gwt_definition = {
     then: {
       expect_error: noop,
     },
   };
 }
-function INVALID_test_case() {
+function INVALID_test_case(this: any) {
   this.gwt_definition = {
     given: {},
     when: {},
@@ -141,26 +145,26 @@ function INVALID_test_case() {
 //#endregion
 
 //#region whens
-async function executing_test_case() {
-  await gwtRunner(this.mock_jest_func, 'test case', this.gwt_definition);
+async function executing_test_case(this: any) {
+  await gwtRunner(this.mock_jest_func)('test case', this.gwt_definition);
 }
 //#endregion
 
 //#region thens
-function all_GIVENS_called() {
+function all_GIVENS_called(this: any) {
   expect(this.executions).toEqual(expect.arrayContaining(['something', 'something_else']));
 }
-function all_WHENS_called() {
+function all_WHENS_called(this: any) {
   expect(this.executions).toEqual(expect.arrayContaining(['something_happens', 'something_else_happens']));
 }
-function all_THENS_called() {
+function all_THENS_called(this: any) {
   expect(this.executions).toEqual(expect.arrayContaining(['assert_something', 'assert_something_else']));
 }
-function expect_error_CALLED() {
+function expect_error_CALLED(this: any) {
   expect(this.executions).toEqual(expect.arrayContaining(['expect_error']));
 }
-function error_containing(message) {
-  return function (e) {
+function error_containing(this: any, message: string) {
+  return function (this: any, e: Error) {
     expect(toLower(e.message)).toEqual(expect.stringMatching(toLower(message)));
   };
 }
