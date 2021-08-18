@@ -1,7 +1,7 @@
 import {
-   test as jestTest,
-   describe,
-   expect,
+  test as jestTest,
+  describe,
+  expect,
 } from '@jest/globals';
 import executeStep from './executeStep';
 import gwtRunner from './gwt';

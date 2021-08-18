@@ -3,7 +3,6 @@ import {
   values,
   merge,
   pick,
-  omit,
   keys,
 } from 'lodash/fp';
 import executeStep from './executeStep';

@@ -1,8 +1,8 @@
 import {
-   test as jestTest,
-    expect,
-    describe,
-   } from '@jest/globals';
+  test as jestTest,
+  expect,
+  describe,
+} from '@jest/globals';
 import gwtRunner from './gwt';
 
 import validateDefinition from './validateDefinition';
