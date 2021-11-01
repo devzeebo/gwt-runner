@@ -5,6 +5,7 @@ module.exports = {
     project: './tsconfig.eslint.json',
   },
   extends: [
+    'airbnb/base',
     'airbnb-typescript/base',
     'plugin:import/errors',
     'plugin:import/warnings',
