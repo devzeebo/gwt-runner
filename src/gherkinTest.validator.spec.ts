@@ -4,8 +4,7 @@ import {
   describe,
 } from '@jest/globals';
 import gwtRunner from './gwt';
-
-import validateDefinition from './validateDefinition';
+import { isGherkinTest } from './gherkinTest';
 
 const test = gwtRunner(jestTest);
 
@@ -93,7 +92,6 @@ function complete_definition(this: any) {
     then: {},
   };
 }
-
 function definition_with_EXTRA_KEYS(this: any) {
   this.definition = {
     given: {},
@@ -104,7 +102,7 @@ function definition_with_EXTRA_KEYS(this: any) {
 }
 
 function validating_definition(this: any) {
-  this.result = validateDefinition(this.definition);
+  this.result = isGherkinTest(this.definition);
 }
 
 function definition_is_valid(this: any) {

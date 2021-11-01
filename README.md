@@ -241,3 +241,48 @@ function email_address_is_INVALID(error) {
   expect(error).toBe('error message from server');
 }
 ```
+
+## Scenario Definition
+Sometimes a GWT flow doesn't make sense. You might be writing integration tests.
+Or something that needs to assert something, then do another thing, then assert
+something else.
+
+In these cases, you can use the **scenario** definition style which merges the
+`when` and `then` together.
+
+```js
+{
+  given: {
+    mock_jest_test_function,
+    GOOD_test_case,
+  },
+  scenario: {
+    when_executing_test_case,
+    then_assert_something,
+    when_user_submits_form,
+    then_something_else_happens,
+    then_yet_another_thing_is_true,
+  }
+}
+```
+
+You can also expect errors from the scenario using the same function style as a
+GWT style `expect_error`:
+
+```js
+{
+  given: {
+    mock_jest_test_function,
+    GOOD_test_case,
+  },
+  scenario: {
+    when_executing_test_case,
+    then_assert_something,
+    when_user_submits_form,
+    then_something_else_happens,
+    then_yet_another_thing_is_true,
+    when_an_error_happens,
+  },
+  expect_error: the_error_happened
+}
+```

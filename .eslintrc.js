@@ -4,9 +4,12 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.eslint.json',
   },
+  plugins: [
+    '@typescript-eslint',
+  ],
   extends: [
+    'airbnb-base',
     'airbnb-typescript/base',
-    'plugin:lodash/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
   ],
