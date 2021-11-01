@@ -1,12 +1,15 @@
 {
   "name": "gwt-runner",
-  "version": "2.1.0",
+  "version": "2.0.0",
   "description": "A small library to help Jest support given-when-then style testing without a bunch of overhead",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "files": [
     "lib",
     "src",
+    "!**/*.spec.ts",
+    "!**/*.spec.d.ts",
+    "!**/*.spec.js.map",
     "!**/*.spec.js"
   ],
   "scripts": {
