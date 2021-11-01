@@ -19,18 +19,18 @@ describe('global context provider', () => {
   });
 });
 
-async function importing_global_context_provider() {
+async function importing_global_context_provider(this: any) {
   import('./index').then((dep) => {
     this.global_context_provider = dep;
   });
 }
 
-async function importing_global_context_provider_AGAIN() {
+async function importing_global_context_provider_AGAIN(this: any) {
   import('./index').then((dep) => {
     this.second_global_context_provider = dep;
   });
 }
 
-function context_provider_IS_SAME() {
+function context_provider_IS_SAME(this: any) {
   expect(this.second_global_context_provider).toBe(this.global_context_provider);
 }

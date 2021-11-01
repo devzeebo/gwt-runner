@@ -67,43 +67,43 @@ describe('Context Provider', () => {
   });
 });
 
-function context_provider() {
+function context_provider(this: any) {
   this.context_provider = new ContextProvider();
 }
 
-function context_provider_WITH_active_context() {
+function context_provider_WITH_active_context(this: any) {
   this.context_provider = new ContextProvider();
   this.context_provider.createContext();
 }
 
-function spawning_context() {
+function spawning_context(this: any) {
   this.previous_context = get('context_provider.activeContext', this);
   this.context_provider.createContext();
 }
 
-function reverting_context() {
+function reverting_context(this: any) {
   this.previous_context = get('context_provider.activeContext', this);
   this.context_provider.releaseContext();
 }
 
-function active_context_EXISTS() {
+function active_context_EXISTS(this: any) {
   expect(this.context_provider.activeContext).toBeTruthy();
 }
 
-function active_context_has_NO_parent() {
+function active_context_has_NO_parent(this: any) {
   expect(this.context_provider.activeContext.parent).toBeFalsy();
 }
 
-function active_context_has_PARENT() {
+function active_context_has_PARENT(this: any) {
   expect(get('context_provider.activeContext.parent', this)).toBeTruthy();
   expect(get('context_provider.activeContext.parent', this)).toBe(this.previous_context);
 }
 
-function active_context_IS_FALSY() {
+function active_context_IS_FALSY(this: any) {
   expect(this.context_provider.activeContext).toBeFalsy();
 }
 
-function active_context_IS_PARENT() {
+function active_context_IS_PARENT(this: any) {
   expect(get('context_provider.activeContext', this)).toBeTruthy();
   expect(get('context_provider.activeContext', this)).toBe(this.previous_context.parent);
 }

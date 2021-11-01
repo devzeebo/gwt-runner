@@ -3,8 +3,6 @@ import {
   values,
   merge,
   pick,
-  omit,
-  curry,
   keys,
 } from 'lodash/fp';
 import executeStep from './executeStep';
@@ -12,7 +10,25 @@ import validateDefinition from './validateDefinition';
 
 import ContextProvider from './contextProvider';
 
-export default curry((testFunc, name, gwtDefinition) => {
+export type StepFn<TContext> = (this: TContext) => void | Promise<void>;
+export type Step<TContext> = {
+  [name: string]: StepFn<TContext>
+};
+export type ThenStep<TContext> = {
+  expect_error?: (this: TContext, error: Error) => void | Promise<void>,
+  and?: Step<TContext>
+} | Step<TContext>;
+
+export type GwtDefinition<TContext> = {
+  given?: Step<TContext>,
+  when?: Step<TContext>,
+  then?: ThenStep<TContext>,
+};
+
+export default (testFunc: (name: string, callback: () => void | Promise<void>) => unknown) => <TContext>(
+  name: string,
+  gwtDefinition: GwtDefinition<TContext>,
+) => {
   if (!validateDefinition(gwtDefinition)) {
     throw new Error(`Invalid GWT definition. Valid keys are [given,when,then].
 Supplied keys were [${keys(gwtDefinition)}]`);
@@ -48,16 +64,18 @@ Supplied keys were [${keys(gwtDefinition)}]`);
       if (!error) {
         throw new Error('Expected error to be thrown, but no error was thrown');
       }
+      // @ts-ignore
       await gwt.then.expect_error.bind(ContextProvider.context)(error);
     } else if (error) {
       throw error;
     }
 
-    await flow(
-      omit(['expect_error']),
-      executeGwtStep,
-    )(gwt.then);
+    if (gwt.then.expect_error) {
+      await executeGwtStep(gwt.then.and);
+    } else {
+      await executeGwtStep(gwt.then);
+    }
 
     ContextProvider.releaseContext();
   });
-});
+};

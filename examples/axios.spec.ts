@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { mocked } from 'ts-jest/utils';
 import { expect } from '@jest/globals';
 import test from './_jestBootstrap';
 import validateEmailAddress from './axios';
 
 jest.mock('axios');
+const mocked_axios = mocked(axios, true);
 
 describe('the validate email address api', () => {
   test('returns true for valid email addresses', {
@@ -50,7 +52,7 @@ describe('the validate email address api', () => {
 function valid_email_address() {
   this.mock_email = 'valid@email.com';
 
-  axios.post.mockResolvedValue({
+  mocked_axios.post.mockResolvedValue({
     data: { success: true },
   });
 }
@@ -58,7 +60,7 @@ function valid_email_address() {
 function INVALID_email_address() {
   this.mock_email = 'invalid';
 
-  axios.post.mockResolvedValue({
+  mocked_axios.post.mockResolvedValue({
     data: {
       success: false,
       error: 'error message from server',
@@ -67,7 +69,7 @@ function INVALID_email_address() {
 }
 
 function network_failure() {
-  axios.post.mockRejectedValue({
+  mocked_axios.post.mockRejectedValue({
     message: 'network failed',
     response: {
       status: 500,

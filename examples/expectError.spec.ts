@@ -10,6 +10,9 @@ describe('expect error', () => {
     },
     then: {
       expect_error,
+      and: {
+        tautology,
+      },
     },
   });
 });
@@ -22,4 +25,7 @@ function throwing_error() {
 }
 function expect_error(error) {
   expect(error.message).toBe(this.error_message);
+}
+function tautology(this: any) {
+  expect(this.error_message).toBe('an error');
 }
