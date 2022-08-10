@@ -3,41 +3,32 @@ import {
   find,
 } from 'lodash/fp';
 import scenarioTest, {
-  GivenScenarioDefinition,
   isScenarioTest,
 } from './scenarioTest';
 import gherkinTest, {
-  GherkinDefinition,
   isGherkinTest,
 } from './gherkinTest';
+import type { GivenScenarioTest, GwtDefinition, TestFunction } from '../types';
+import type { GherkinTest } from '../types/gherkin/Gherkin';
 
-export type GwtDefinition<TContext> =
-  GherkinDefinition<TContext>
-  | GivenScenarioDefinition<TContext>;
-
-export type TestFunction = (
-  name: string,
-  callback: () => void | Promise<void>
-) => unknown;
-
-type TestType = {
+type TestType<T extends GwtDefinition<any> = GwtDefinition<any>> = {
   test: (def: any) => boolean,
   runner: (
     testFunc: TestFunction,
     name: string,
-    gwtDefinition: GwtDefinition<any>
+    gwtDefinition: T,
   ) => void,
 };
 
-const testTypes: Array<TestType> = [
+const testTypes: Array<TestType<any>> = [
   {
     test: isGherkinTest,
     runner: gherkinTest,
-  },
+  } as TestType<GherkinTest<any>>,
   {
     test: isScenarioTest,
     runner: scenarioTest,
-  },
+  } as TestType<GivenScenarioTest<any>>,
 ];
 
 export default (
