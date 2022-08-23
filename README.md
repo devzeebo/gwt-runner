@@ -243,12 +243,82 @@ function email_address_is_INVALID(error) {
 ```
 
 ## Scenario Definition
+
 Sometimes a GWT flow doesn't make sense. You might be writing integration tests.
 Or something that needs to assert something, then do another thing, then assert
 something else.
 
-In these cases, you can use the **scenario** definition style which merges the
-`when` and `then` together.
+In these cases, you can use the **scenario** definition style which allows
+chaining `when` and `then`, then `then_when` and `then` blocks together.
+
+```ts
+{
+  given: {
+    mock_jest_test_function,
+    GOOD_test_case,
+  },
+  scenario: [{
+    when: {
+      executing_test_case,
+    },
+    then: {
+      assert_something,
+    },
+  }, {
+    then_when: {
+      user_submits_form,
+    },
+    then: {
+      something_else_happens,
+      yet_another_thing_is_true,
+    },
+  }, {
+    then_when: {
+      something_happens,
+    },
+    then: {
+      expect_error: some_check,
+      and: {
+        something_is_still_true,
+      },
+    }
+  }]
+}
+```
+
+### Naming Steps
+
+If a step fails, the error will be caught and wrapped with the step index.  To
+make this error more descriptive, you can optionally name each step:
+
+```ts
+{
+  given: {
+    mock_jest_test_function,
+    GOOD_test_case,
+  },
+  scenario: [{
+    name: 'Adding to cart',
+    when: {
+      executing_test_case,
+    },
+    then: {
+      assert_something,
+    },
+  }, {
+    name: 'Checking out',
+    ...
+  }, {
+    name: 'Paying',
+    ...
+  }],
+}
+```
+
+## Alternative Scenario Definition
+
+The old syntax is still supported, but is DEPRECATED and will be removed in
+version 3.0
 
 ```js
 {
