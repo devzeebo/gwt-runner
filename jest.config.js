@@ -3,6 +3,7 @@ module.exports = {
   clearMocks: true,
   roots: [
     './src',
+    './examples',
   ],
   collectCoverageFrom: [
     './src/**/*.ts',
