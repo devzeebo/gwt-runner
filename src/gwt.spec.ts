@@ -25,7 +25,7 @@ describe('test context', () => {
   });
 });
 
-//#region givens
+// #region givens
 function mock_jest_test_function(this: any) {
   this.mock_jest_func = async (_: string, func: () => any) => func();
 }
@@ -37,18 +37,18 @@ function INVALID_test_case(this: any) {
     oops: {},
   };
 }
-//#endregion
+// #endregion
 
-//#region whens
+// #region whens
 async function executing_test_case(this: any) {
   await gwtRunner(this.mock_jest_func)('test case', this.gwt_definition);
 }
-//#endregion
+// #endregion
 
-//#region thens
+// #region thens
 function error_containing(this: any, message: string) {
   return function (this: any, e: Error) {
     expect(toLower(e.message)).toEqual(expect.stringMatching(toLower(message)));
   };
 }
-//#endregion
+// #endregion

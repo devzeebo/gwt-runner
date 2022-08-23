@@ -8,7 +8,9 @@ import gwtRunner from './gwt';
 
 const test = gwtRunner(jestTest);
 
-const timeout = (ms: number) => new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
+const timeout = (ms: number) => new Promise<void>((resolve) => {
+  setTimeout(() => resolve(), ms);
+});
 
 describe('execute step', () => {
   test('works with non-async functions', {
@@ -68,23 +70,28 @@ type Execution = {
   order: number,
   context: any
 };
-//#region constants
+// #region constants
 const makeFunc = (order: number, executions: Execution[]) => function (this: any) {
   executions.push({
     order,
     context: this,
   });
 };
-const makeAsyncFunc = (order: number, ms: number, executions: Execution[]) => async function (this: any) {
+
+const makeAsyncFunc = (
+  order: number,
+  ms: number,
+  executions: Execution[],
+) => async function (this: any) {
   await timeout(ms);
   executions.push({
     order,
     context: this,
   });
 };
-//#endregion
+// #endregion
 
-//#region given
+// #region given
 function context(this: any) {
   this.context = {};
 }
@@ -118,15 +125,15 @@ function MIXED_functions(this: any) {
   ];
   this.executions = executions;
 }
-//#endregion
+// #endregion
 
-//#region whens
+// #region whens
 async function executing_step(this: any) {
-  await executeStep(this.context)(this.funcs);
+  await executeStep(this.context, this.funcs);
 }
-//#endregion
+// #endregion
 
-//#region thens
+// #region thens
 function functions_execute_in_order(this: any) {
   expect(this.executions.length).toBe(3);
   expect(this.executions[0].order).toBeLessThan(this.executions[1].order);
@@ -138,4 +145,4 @@ function context_is_bound_to_functions(this: any) {
   expect(this.executions[1].context).toBe(this.context);
   expect(this.executions[2].context).toBe(this.context);
 }
-//#endregion
+// #endregion

@@ -1,19 +1,21 @@
-// istanbul ignore file
-export { default } from './gwt';
-export { default as TestContext } from './contextProvider';
-
 export type {
   GwtDefinition,
   TestFunction,
+} from './Gwt';
+export type {
   Step,
   ThenStep,
   ThenStepWithExpectError,
   StepFn,
+} from './Step';
+export type {
   GivenScenarioDefinition,
   GivenScenarioWhenThenDefinition,
   GivenScenarioTest,
   ScenarioWhenStep,
   ScenarioThenWhenStep,
   ScenarioStep,
-  GherkinDefinition,
-} from '../types';
+} from './scenario/Scenario';
+export type {
+  GherkinTest as GherkinDefinition,
+} from './gherkin/Gherkin';

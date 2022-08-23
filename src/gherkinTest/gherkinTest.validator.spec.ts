@@ -3,15 +3,15 @@ import {
   expect,
   describe,
 } from '@jest/globals';
-import gwtRunner from './gwt';
-import { isScenarioTest } from './scenarioTest';
+import gwtRunner from '../gwt';
+import { isGherkinTest } from './gherkinTest';
 
 const test = gwtRunner(jestTest);
 
 describe('validate definition', () => {
-  test('accepts given scenario', {
+  test('accepts only given', {
     given: {
-      definition_with_SCENARIO,
+      definition_with_only_GIVEN,
     },
     when: {
       validating_definition,
@@ -21,9 +21,33 @@ describe('validate definition', () => {
     },
   });
 
-  test('accepts given scenario and expect error', {
+  test('accepts only when', {
     given: {
-      definition_with_SCENARIO_and_EXPECT_ERROR,
+      definition_with_only_WHEN,
+    },
+    when: {
+      validating_definition,
+    },
+    then: {
+      definition_is_valid,
+    },
+  });
+
+  test('accepts only then', {
+    given: {
+      definition_with_only_THEN,
+    },
+    when: {
+      validating_definition,
+    },
+    then: {
+      definition_is_valid,
+    },
+  });
+
+  test('accepts all three', {
+    given: {
+      complete_definition,
     },
     when: {
       validating_definition,
@@ -46,30 +70,39 @@ describe('validate definition', () => {
   });
 });
 
-function definition_with_SCENARIO(this: any) {
+function definition_with_only_GIVEN(this: any) {
   this.definition = {
     given: {},
-    scenario: {},
   };
 }
-function definition_with_SCENARIO_and_EXPECT_ERROR(this: any) {
+function definition_with_only_WHEN(this: any) {
+  this.definition = {
+    when: {},
+  };
+}
+function definition_with_only_THEN(this: any) {
+  this.definition = {
+    then: {},
+  };
+}
+function complete_definition(this: any) {
   this.definition = {
     given: {},
-    scenario: {},
-    expect_error: () => {},
+    when: {},
+    then: {},
   };
 }
-
 function definition_with_EXTRA_KEYS(this: any) {
   this.definition = {
     given: {},
-    scenario: {},
+    when: {},
+    then: {},
     extra: {},
   };
 }
 
 function validating_definition(this: any) {
-  this.result = isScenarioTest(this.definition);
+  this.result = isGherkinTest(this.definition);
 }
 
 function definition_is_valid(this: any) {

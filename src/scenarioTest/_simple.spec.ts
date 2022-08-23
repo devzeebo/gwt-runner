@@ -7,7 +7,7 @@ import {
   noop,
   toLower,
 } from 'lodash/fp';
-import gwtRunner from './gwt';
+import gwtRunner from '../gwt';
 import scenarioTest from './scenarioTest';
 
 const test = gwtRunner(jestTest);
@@ -70,7 +70,7 @@ describe('test context', () => {
   });
 });
 
-//#region givens
+// #region givens
 function mock_jest_test_function(this: any) {
   this.mock_jest_func = async (_: string, func: () => any) => func();
 }
@@ -79,14 +79,26 @@ function GOOD_test_case(this: any) {
 
   this.gwt_definition = {
     given: {
-      something() { executions.push('something'); },
-      something_else() { executions.push('something_else'); },
+      something() {
+        executions.push('something');
+      },
+      something_else() {
+        executions.push('something_else');
+      },
     },
     scenario: {
-      when_doing_something() { executions.push('when_doing_something'); },
-      then_assert_something() { executions.push('then_assert_something'); },
-      when_doing_something_else() { executions.push('when_doing_something_else'); },
-      then_assert_something_else() { executions.push('then_assert_something_else'); },
+      when_doing_something() {
+        executions.push('when_doing_something');
+      },
+      then_assert_something() {
+        executions.push('then_assert_something');
+      },
+      when_doing_something_else() {
+        executions.push('when_doing_something_else');
+      },
+      then_assert_something_else() {
+        executions.push('then_assert_something_else');
+      },
     },
   };
 
@@ -97,13 +109,25 @@ function ERROR_test_case_WITH_expect_error(this: any) {
 
   this.gwt_definition = {
     scenario: {
-      when_doing_something() { executions.push('when_doing_something'); },
-      then_assert_something() { executions.push('then_assert_something'); },
-      when_doing_something_else() { executions.push('when_doing_something_else'); },
-      then_assert_something_else() { executions.push('then_assert_something_else'); },
-      oops() { throw new Error('oops!'); },
+      when_doing_something() {
+        executions.push('when_doing_something');
+      },
+      then_assert_something() {
+        executions.push('then_assert_something');
+      },
+      when_doing_something_else() {
+        executions.push('when_doing_something_else');
+      },
+      then_assert_something_else() {
+        executions.push('then_assert_something_else');
+      },
+      oops() {
+        throw new Error('oops!');
+      },
     },
-    expect_error() { executions.push('expect_error'); },
+    expect_error() {
+      executions.push('expect_error');
+    },
   };
 
   this.executions = executions;
@@ -111,7 +135,9 @@ function ERROR_test_case_WITH_expect_error(this: any) {
 function ERROR_test_case_WITHOUT_expect_error(this: any) {
   this.gwt_definition = {
     scenario: {
-      oops() { throw new Error('Oops!'); },
+      oops() {
+        throw new Error('Oops!');
+      },
     },
   };
 }
@@ -120,15 +146,15 @@ function GOOD_test_case_WITH_expect_error(this: any) {
     expect_error: noop,
   };
 }
-//#endregion
+// #endregion
 
-//#region whens
+// #region whens
 async function executing_test_case(this: any) {
   await scenarioTest(this.mock_jest_func, 'test case', this.gwt_definition);
 }
-//#endregion
+// #endregion
 
-//#region thens
+// #region thens
 function all_GIVENS_called(this: any) {
   expect(this.executions).toEqual(expect.arrayContaining(['something', 'something_else']));
 }
@@ -148,4 +174,4 @@ function error_containing(this: any, message: string) {
     expect(toLower(e.message)).toEqual(expect.stringMatching(toLower(message)));
   };
 }
-//#endregion
+// #endregion
