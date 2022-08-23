@@ -27,6 +27,18 @@ describe('Context Provider', () => {
     },
   });
 
+  test('get context WITHOUT active context', {
+    given: {
+      context_provider,
+    },
+    when: {
+      retrieving_context,
+    },
+    then: {
+      value_is_FALSY,
+    },
+  });
+
   test('creates child context if context exists', {
     given: {
       context_provider_WITH_active_context,
@@ -86,6 +98,10 @@ function reverting_context(this: any) {
   this.context_provider.releaseContext();
 }
 
+function retrieving_context(this: any) {
+  this.result = this.context_provider.context;
+}
+
 function active_context_EXISTS(this: any) {
   expect(this.context_provider.activeContext).toBeTruthy();
 }
@@ -106,4 +122,8 @@ function active_context_IS_FALSY(this: any) {
 function active_context_IS_PARENT(this: any) {
   expect(get('context_provider.activeContext', this)).toBeTruthy();
   expect(get('context_provider.activeContext', this)).toBe(this.previous_context.parent);
+}
+
+function value_is_FALSY(this: any) {
+  expect(this.result).toBeUndefined();
 }

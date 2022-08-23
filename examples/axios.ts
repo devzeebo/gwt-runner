@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default (email) => axios.post('/api/validateEmail', {
+export default (email: string) => axios.post('/api/validateEmail', {
   email,
 })
   .then((res) => {
