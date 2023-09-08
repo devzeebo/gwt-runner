@@ -5,7 +5,7 @@ import {
 } from '@jest/globals';
 import executeStep from './executeStep';
 import gwtRunner from './gwt';
-import { Step } from '../types';
+import type { Step } from '../types';
 
 const test = gwtRunner(jestTest);
 
@@ -76,8 +76,8 @@ describe('execute step', () => {
     },
     then: {
       functions_execute_in_order,
-    }
-  })
+    },
+  });
 });
 
 type Execution = {
@@ -109,7 +109,7 @@ type Context = {
   context: any,
   funcs: Step<any>,
   executions: Execution[],
-}
+};
 
 // #region given
 function context(this: Context) {

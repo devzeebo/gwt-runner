@@ -58,7 +58,7 @@ The test definition is an object with three keys: `given`, `when`, and
 All `given` clauses are executed first, then all `when` clauses, then all
 `then` clauses.
 
-The syntax of `definition` takes advantage of ES6's shorthand object literal
+The default syntax of `definition` takes advantage of ES6's shorthand object literal
 syntax. In reality, the object looks like this:
 ```js
 {
@@ -90,6 +90,61 @@ Generally, you want to use the shorthand syntax as it reads nicer.
 The only acceptable clauses in the `given`, `when`, and `then` definitions are
 UNBOUND functions. Do NOT use arrow functions, or the context won't work at
 all!
+
+### Array Steps
+
+If you'd rather use an array instead of a keyed object, you can do that too:
+```js
+{
+  given: [
+    mock_jest_test_function,
+    GOOD_test_case,
+  ],
+  when: [
+    executing_test_case,
+  ],
+  then: [
+    all_GIVENS_called,
+    all_WHENS_called,
+    all_THENS_called,
+  ],
+}
+```
+
+This is more useful if you want to use curried functions:
+
+```js
+{
+  given: {
+    some_given,
+  },
+  when: [
+    user_enters_data({ some: 'data' }),
+  ],
+  then: {
+    the_form_has_data,
+  }
+}
+```
+
+Keep in mind that the functions returned from the curried functions must still
+be function definitions and can not be array functions:
+
+```ts
+// GOOD
+function user_enters_data(data: any) {
+  return (this: Context) {
+    do_the_thing_with_the_data(data);
+  };
+};
+
+// BAD
+function user_enters_data(data: any) {
+  return (this: Context) => {
+    do_the_thing_with_the_data(data);
+  };
+};
+```
 
 ## Functions in the Definition
 

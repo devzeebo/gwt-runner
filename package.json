@@ -1,6 +1,6 @@
 {
   "name": "gwt-runner",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A small library to help Jest support given-when-then style testing without a bunch of overhead",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -73,6 +73,7 @@
     "@swc/jest": "^0.2.29",
     "@types/jest": "^29.5.4",
     "@types/lodash": "^4.14.198",
+    "@types/node": "^20.6.0",
     "axios": "^1.5.0",
     "eslint": "^8.49.0",
     "jest": "^29.6.4",
