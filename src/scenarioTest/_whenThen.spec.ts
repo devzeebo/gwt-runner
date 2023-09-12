@@ -79,6 +79,22 @@ describe('scenarios > when then', () => {
       expect_error: scenario_definition,
     },
   });
+
+  test('arrays', {
+    given: {
+      context,
+      array_steps,
+    },
+    when: {
+      executing_step,
+    },
+    then: {
+      WHEN_block_executed,
+      THEN_block_executed,
+      WHEN_THEN_block_executed,
+      WHEN_THEN_THEN_block_executed,
+    },
+  });
 });
 
 type TestContext = Symbol;
@@ -123,6 +139,42 @@ function steps(this: Context) {
         executions.push([this, 'assert_yet_another_thing']);
       },
     },
+  }];
+
+  this.executions = executions;
+}
+
+function array_steps(this: Context) {
+  const executions: Execution[] = [];
+
+  this.steps = [{
+    when: [
+      function do_something(this: TestContext) {
+        executions.push([this, 'do_something']);
+      },
+    ],
+    then: [
+      function assert_something(this: TestContext) {
+        executions.push([this, 'assert_something']);
+      },
+      function assert_something_else(this: TestContext) {
+        executions.push([this, 'assert_something_else']);
+      },
+    ],
+  }, {
+    then_when: [
+      function do_something_else(this: TestContext) {
+        executions.push([this, 'do_something_else']);
+      },
+    ],
+    then: [
+      function assert_another_thing(this: TestContext) {
+        executions.push([this, 'assert_another_thing']);
+      },
+      function assert_yet_another_thing(this: TestContext) {
+        executions.push([this, 'assert_yet_another_thing']);
+      },
+    ],
   }];
 
   this.executions = executions;

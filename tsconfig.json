@@ -8,7 +8,8 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "incremental": true
+    "incremental": true,
+    "importHelpers": true
   },
   "exclude": [
     "node_modules"

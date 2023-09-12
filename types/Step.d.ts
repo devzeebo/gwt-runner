@@ -13,4 +13,6 @@ export type ThenStepWithExpectError<TContext> = {
   and?: Step<TContext>,
 };
 
-export type ThenStep<TContext> = ThenStepWithExpectError<TContext> | Omit<StepObject<TContext>, 'and' | 'expect_error'>;
+export type ThenStep<TContext> = ThenStepWithExpectError<TContext>
+| Omit<StepObject<TContext>, 'and' | 'expect_error'>
+| StepArray<TContext>;

@@ -1,13 +1,13 @@
-import type { StepObject, ThenStep } from '../Step';
+import type { Step, ThenStep } from '../Step';
 
 export type GivenScenarioDefinition<TContext> = {
-  given?: StepObject<TContext>,
-  scenario: StepObject<TContext>,
+  given?: Step<TContext>,
+  scenario: Step<TContext>,
   expect_error?: (this: TContext, error: Error) => void | Promise<void>,
 };
 
 export type GivenScenarioWhenThenDefinition<TContext> = {
-  given?: StepObject<TContext>,
+  given?: Step<TContext>,
   scenario: ScenarioStep<TContext>
 };
 
@@ -17,13 +17,13 @@ GivenScenarioDefinition<TContext>
 
 export type ScenarioWhenStep<TContext> = {
   name?: string,
-  when: StepObject<TContext>,
+  when: Step<TContext>,
   then: ThenStep<TContext>,
 };
 
 export type ScenarioThenWhenStep<TContext> = {
   name?: string,
-  then_when: StepObject<TContext>,
+  then_when: Step<TContext>,
   then: ThenStep<TContext>,
 };
 
