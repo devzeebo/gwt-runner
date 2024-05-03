@@ -14,6 +14,7 @@ import ContextProvider from '../contextProvider';
 import executeWhenThen from './_whenThen';
 import executeSimple from './_simple';
 import isWhenThenScenarioTest from './_isWhenThenScenarioTest';
+import type { ConfigureTestFunction } from '../../types/Gwt';
 
 export const isScenarioTest = <TContext>(
   test: GwtDefinition<TContext>,
@@ -25,13 +26,18 @@ export const isScenarioTest = <TContext>(
 
 export default <TContext>(
   testFunc: TestFunction,
+  configureTestFunction: ConfigureTestFunction<TContext> | undefined,
   name: string,
   gwt: GivenScenarioTest<TContext>,
 ) => (
-  testFunc(name, async () => {
+  testFunc(name, async (...args: any[]) => {
     ContextProvider.createContext();
 
     const context = ContextProvider.context as TContext;
+
+    if (configureTestFunction) {
+      configureTestFunction(context, ...args);
+    }
 
     await executeStep(context, gwt.given);
 

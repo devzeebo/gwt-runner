@@ -9,6 +9,7 @@ import executeStep from '../executeStep';
 import ContextProvider from '../contextProvider';
 import whenStep from '../whenStep';
 import thenStep from '../thenStep';
+import type { ConfigureTestFunction } from '../../types/Gwt';
 
 export const isGherkinTest = <TContext>(
   test: GwtDefinition<TContext>,
@@ -19,14 +20,19 @@ export const isGherkinTest = <TContext>(
   )(test);
 
 export default <TContext>(
-  testFunc: (name: string, callback: () => void | Promise<void>) => unknown,
+  testFunc: (name: string, callback: (...args: any[]) => void | Promise<void>) => unknown,
+  configureTestFunc: ConfigureTestFunction<TContext> | undefined,
   name: string,
   gwt: GherkinDefinition<TContext>,
 ) => (
-  testFunc(name, async () => {
+  testFunc(name, async (...args) => {
     ContextProvider.createContext();
 
     const context = ContextProvider.context as TContext;
+
+    if (configureTestFunc) {
+      configureTestFunc(context, ...args);
+    }
 
     await executeStep(context, gwt.given);
 

@@ -10,11 +10,13 @@ import gherkinTest, {
 } from './gherkinTest';
 import type { GivenScenarioTest, GwtDefinition, TestFunction } from '../types';
 import type { GherkinTest } from '../types/gherkin/Gherkin';
+import type { ConfigureTestFunction } from '../types/Gwt';
 
 type TestType<T extends GwtDefinition<any> = GwtDefinition<any>> = {
   test: (def: any) => boolean,
   runner: (
     testFunc: TestFunction,
+    configureTestFunc: ConfigureTestFunction<any> | undefined,
     name: string,
     gwtDefinition: T,
   ) => void,
@@ -31,8 +33,9 @@ const testTypes: Array<TestType<any>> = [
   } as TestType<GivenScenarioTest<any>>,
 ];
 
-export default (
+export default <TContextBase = never>(
   testFunc: TestFunction,
+  configureTestFunc?: ConfigureTestFunction<TContextBase>,
 ) => <TContext>(
   name: string,
   gwtDefinition: GwtDefinition<TContext>,
@@ -46,6 +49,7 @@ Supplied keys were [${keys(gwtDefinition)}]`);
 
   return testType.runner(
     testFunc,
+    configureTestFunc,
     name,
     gwtDefinition,
   );

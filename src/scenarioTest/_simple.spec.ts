@@ -150,7 +150,7 @@ function GOOD_test_case_WITH_expect_error(this: any) {
 
 // #region whens
 async function executing_test_case(this: any) {
-  await scenarioTest(this.mock_jest_func, 'test case', this.gwt_definition);
+  await scenarioTest(this.mock_jest_func, undefined, 'test case', this.gwt_definition);
 }
 // #endregion
 

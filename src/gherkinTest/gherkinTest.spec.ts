@@ -66,12 +66,41 @@ describe('test context', () => {
       expect_error: error_containing('oops!'),
     },
   });
+
+  test('with configuration', {
+    given: {
+      mock_test_function_WITH_ARGUMENTS,
+      configure_test_function,
+      GOOD_test_case,
+    },
+    when: {
+      executing_test_case,
+    },
+    then: {
+      all_GIVENS_called,
+      all_WHENS_called,
+      all_THENS_called,
+      configure_called_with_context_and_args,
+    },
+  });
 });
 
 // #region givens
 function mock_jest_test_function(this: any) {
   this.mock_jest_func = async (_: string, func: () => any) => func();
 }
+
+function mock_test_function_WITH_ARGUMENTS(this: any) {
+  this.mock_jest_func = async (
+    _: string,
+    func: (first: any, second: any) => any,
+  ) => func('first', 'second');
+}
+
+function configure_test_function(this: any) {
+  this.configure_test_fn = jest.fn();
+}
+
 function GOOD_test_case(this: any) {
   const executions = [] as string[];
 
@@ -104,6 +133,7 @@ function GOOD_test_case(this: any) {
 
   this.executions = executions;
 }
+
 function ERROR_test_case_WITH_expect_error(this: any) {
   const executions = [] as string[];
 
@@ -144,7 +174,12 @@ function GOOD_test_case_WITH_expect_error(this: any) {
 
 // #region whens
 async function executing_test_case(this: any) {
-  await gherkinTest(this.mock_jest_func, 'test case', this.gwt_definition);
+  await gherkinTest(
+    this.mock_jest_func,
+    this.configure_test_fn,
+    'test case',
+    this.gwt_definition,
+  );
 }
 // #endregion
 
@@ -171,5 +206,13 @@ function error_containing(this: any, message: string) {
   return function (this: any, e: Error) {
     expect(toLower(e.message)).toEqual(expect.stringMatching(toLower(message)));
   };
+}
+
+function configure_called_with_context_and_args(this: any) {
+  expect(this.configure_test_fn).toHaveBeenCalledWith(
+    expect.anything(),
+    'first',
+    'second',
+  );
 }
 // #endregion

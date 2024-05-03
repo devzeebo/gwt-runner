@@ -7,5 +7,9 @@ export type GwtDefinition<TContext> =
 
 export type TestFunction = (
   name: string,
-  callback: () => void | Promise<void>
+  callback: (...args: any[]) => void | Promise<void>
 ) => unknown;
+
+export type ConfigureTestFunction<TContextBase> = (
+  (context: TContextBase, ...args: any[]) => any
+);
