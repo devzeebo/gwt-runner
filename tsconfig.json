@@ -12,7 +12,6 @@
     "moduleResolution": "bundler",
     "target": "ES2022",
     "skipLibCheck": true,
-    "isolatedDeclarations": true,
     "typeRoots": ["./node_modules/@types"]
   },
   "include": ["./src", "./types", "./examples"]

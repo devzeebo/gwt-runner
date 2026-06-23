@@ -4,12 +4,9 @@ export default defineConfig({
   pack: {
     entry: "src/index.ts",
     format: ["esm", "cjs"],
-    dts: {
-      oxc: true,
-    },
+    dts: true,
     sourcemap: true,
     outDir: "lib",
-    exports: false,
     platform: "node",
     root: "src",
     copy: ["types"],
