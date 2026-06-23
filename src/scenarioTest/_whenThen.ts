@@ -3,9 +3,9 @@ import type {
   ScenarioStep,
   ScenarioThenWhenStep,
   ScenarioWhenStep,
-} from '../../types';
-import whenStep from '../whenStep';
-import thenStep from '../thenStep';
+} from "../../types";
+import { whenStep } from "../whenStep";
+import { thenStep } from "../thenStep";
 
 const recursiveSteps = async <TContext>(
   context: TContext,
@@ -15,9 +15,10 @@ const recursiveSteps = async <TContext>(
   const step = steps[index];
 
   try {
-    const when = index === 0
-      ? (step as ScenarioWhenStep<TContext>).when
-      : (step as ScenarioThenWhenStep<TContext>).then_when;
+    const when =
+      index === 0
+        ? (step as ScenarioWhenStep<TContext>).when
+        : (step as ScenarioThenWhenStep<TContext>).then_when;
 
     const error = await whenStep(context, when);
 
@@ -27,24 +28,17 @@ const recursiveSteps = async <TContext>(
   }
 
   if (index + 1 < steps.length) {
-    await recursiveSteps(
-      context,
-      steps,
-      index + 1,
-    );
+    await recursiveSteps(context, steps, index + 1);
   }
 };
 
-export default async <TContext>(
+export const executeWhenThen = async <TContext>(
   context: TContext,
   gwt: GivenScenarioWhenThenDefinition<TContext>,
 ) => {
   if (!gwt.scenario) {
-    throw new Error('Expected scenario definition');
+    throw new Error("Expected scenario definition");
   }
 
-  await recursiveSteps(
-    context,
-    gwt.scenario,
-  );
+  await recursiveSteps(context, gwt.scenario);
 };

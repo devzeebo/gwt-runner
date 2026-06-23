@@ -1,13 +1,5 @@
-export type {
-  GwtDefinition,
-  TestFunction,
-} from './Gwt';
-export type {
-  Step,
-  ThenStep,
-  ThenStepWithExpectError,
-  StepFn,
-} from './Step';
+export type { GwtDefinition, TestFunction } from "./Gwt";
+export type { Step, ThenStep, ThenStepWithExpectError, StepFn } from "./Step";
 export type {
   GivenScenarioDefinition,
   GivenScenarioWhenThenDefinition,
@@ -15,7 +7,5 @@ export type {
   ScenarioWhenStep,
   ScenarioThenWhenStep,
   ScenarioStep,
-} from './scenario/Scenario';
-export type {
-  GherkinTest as GherkinDefinition,
-} from './gherkin/Gherkin';
+} from "./scenario/Scenario";
+export type { GherkinTest as GherkinDefinition } from "./gherkin/Gherkin";

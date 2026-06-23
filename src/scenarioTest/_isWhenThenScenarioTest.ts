@@ -1,11 +1,6 @@
-import isArray from 'lodash/isArray';
-import type {
-  GivenScenarioTest,
-  GivenScenarioWhenThenDefinition,
-} from '../../types';
+import isArray from "lodash/isArray";
+import type { GivenScenarioTest, GivenScenarioWhenThenDefinition } from "../../types";
 
-export default <TContext>(
+export const isWhenThenScenarioTest = <TContext>(
   gwt: GivenScenarioTest<TContext>,
-): gwt is GivenScenarioWhenThenDefinition<TContext> => (
-  isArray(gwt.scenario)
-);
+): gwt is GivenScenarioWhenThenDefinition<TContext> => isArray(gwt.scenario);

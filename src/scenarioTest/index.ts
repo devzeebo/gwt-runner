@@ -1,2 +1,2 @@
 // istanbul ignore file
-export { default, isScenarioTest } from './scenarioTest';
+export { scenarioTest, isScenarioTest } from "./scenarioTest";

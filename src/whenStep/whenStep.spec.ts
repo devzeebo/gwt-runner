@@ -1,16 +1,12 @@
-import {
-  test as jestTest,
-  describe,
-  expect,
-} from '@jest/globals';
-import type { Step } from '../../types';
-import gwtRunner from '../gwt';
-import whenStep from './whenStep';
+import { test as vitestTest, describe, expect } from "vitest";
+import type { Step } from "../../types";
+import { gwtRunner } from "../gwt";
+import { whenStep } from "./whenStep";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('when step', () => {
-  test('executes step with context', {
+describe("when step", () => {
+  test("executes step with context", {
     given: {
       context,
       step,
@@ -24,7 +20,7 @@ describe('when step', () => {
     },
   });
 
-  test('if error, return error', {
+  test("if error, return error", {
     given: {
       context,
       step_THROWS_ERROR,
@@ -38,19 +34,19 @@ describe('when step', () => {
   });
 });
 
-type TestContext = Symbol;
+type TestContext = symbol;
 
 type Context = {
-  context: Symbol,
-  step: Step<TestContext>,
+  context: symbol;
+  step: Step<TestContext>;
 
-  executions: [TestContext, string][],
+  executions: [TestContext, string][];
 
-  result: Error | undefined
+  result: Error | undefined;
 };
 
 function context(this: Context) {
-  this.context = Symbol.for('context');
+  this.context = Symbol.for("context");
 }
 
 function step(this: Context) {
@@ -58,7 +54,7 @@ function step(this: Context) {
 
   this.step = {
     do_something(this: TestContext) {
-      executions.push([this, 'when do something']);
+      executions.push([this, "when do something"]);
     },
   };
 
@@ -68,22 +64,17 @@ function step(this: Context) {
 function step_THROWS_ERROR(this: Context) {
   this.step = {
     do_something() {
-      throw new Error('oops');
+      throw new Error("oops");
     },
   };
 }
 
 async function executing_step(this: Context) {
-  this.result = await whenStep(
-    this.context,
-    this.step,
-  );
+  this.result = await whenStep(this.context, this.step);
 }
 
 function step_executed_with_context(this: Context) {
-  expect(this.executions).toEqual([
-    [Symbol.for('context'), 'when do something'],
-  ]);
+  expect(this.executions).toEqual([[Symbol.for("context"), "when do something"]]);
 }
 
 function NO_error_returned(this: Context) {
@@ -91,5 +82,5 @@ function NO_error_returned(this: Context) {
 }
 
 function ERROR_returned(this: Context) {
-  expect(this.result).toEqual(new Error('oops'));
+  expect(this.result).toEqual(new Error("oops"));
 }

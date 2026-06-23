@@ -1,20 +1,17 @@
-import {
-  test as jestTest,
-  describe,
-  expect,
-} from '@jest/globals';
-import executeStep from './executeStep';
-import gwtRunner from './gwt';
-import type { Step } from '../types';
+import { test as vitestTest, describe, expect } from "vitest";
+import { executeStep } from "./executeStep";
+import { gwtRunner } from "./gwt";
+import type { Step } from "../types";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-const timeout = (ms: number) => new Promise<void>((resolve) => {
-  setTimeout(() => resolve(), ms);
-});
+const timeout = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(() => resolve(), ms);
+  });
 
-describe('execute step', () => {
-  test('works with non-async functions', {
+describe("execute step", () => {
+  test("works with non-async functions", {
     given: {
       context,
       NO_async_functions,
@@ -27,7 +24,7 @@ describe('execute step', () => {
     },
   });
 
-  test('works with async functions', {
+  test("works with async functions", {
     given: {
       context,
       ALL_async_functions,
@@ -40,7 +37,7 @@ describe('execute step', () => {
     },
   });
 
-  test('works with mixed async and sync functions', {
+  test("works with mixed async and sync functions", {
     given: {
       context,
       MIXED_functions,
@@ -53,7 +50,7 @@ describe('execute step', () => {
     },
   });
 
-  test('uses same context for all contexts', {
+  test("uses same context for all contexts", {
     given: {
       context,
       NO_async_functions,
@@ -66,7 +63,7 @@ describe('execute step', () => {
     },
   });
 
-  test('accepts arrays', {
+  test("accepts arrays", {
     given: {
       context,
       array_functions,
@@ -81,34 +78,32 @@ describe('execute step', () => {
 });
 
 type Execution = {
-  order: number,
-  context: any
+  order: number;
+  context: any;
 };
 // #region constants
-const makeFunc = (order: number, executions: Execution[]) => function (this: any) {
-  executions.push({
-    order,
-    context: this,
-  });
-};
+const makeFunc = (order: number, executions: Execution[]) =>
+  function (this: any) {
+    executions.push({
+      order,
+      context: this,
+    });
+  };
 
-const makeAsyncFunc = (
-  order: number,
-  ms: number,
-  executions: Execution[],
-) => async function (this: any) {
-  await timeout(ms);
-  executions.push({
-    order,
-    context: this,
-  });
-};
+const makeAsyncFunc = (order: number, ms: number, executions: Execution[]) =>
+  async function (this: any) {
+    await timeout(ms);
+    executions.push({
+      order,
+      context: this,
+    });
+  };
 // #endregion
 
 type Context = {
-  context: any,
-  funcs: Step<any>,
-  executions: Execution[],
+  context: any;
+  funcs: Step<any>;
+  executions: Execution[];
 };
 
 // #region given
@@ -150,11 +145,7 @@ function array_functions(this: Context) {
   const executions = [] as Execution[];
 
   // NOTE: Array Syntax
-  this.funcs = [
-    makeFunc(1, executions),
-    makeFunc(2, executions),
-    makeFunc(3, executions),
-  ];
+  this.funcs = [makeFunc(1, executions), makeFunc(2, executions), makeFunc(3, executions)];
   this.executions = executions;
 }
 // #endregion

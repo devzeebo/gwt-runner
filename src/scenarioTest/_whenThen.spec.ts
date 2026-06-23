@@ -1,17 +1,13 @@
-import {
-  test as jestTest,
-  describe,
-  expect,
-} from '@jest/globals';
-import type { ScenarioStep } from '../../types';
-import gwtRunner from '../gwt';
+import { test as vitestTest, describe, expect } from "vitest";
+import type { ScenarioStep } from "../../types";
+import { gwtRunner } from "../gwt";
 
-import whenThen from './_whenThen';
+import { executeWhenThen as whenThen } from "./_whenThen";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('scenarios > when then', () => {
-  test('executes when/then and then_when/then', {
+describe("scenarios > when then", () => {
+  test("executes when/then and then_when/then", {
     given: {
       context,
       steps,
@@ -27,7 +23,7 @@ describe('scenarios > when then', () => {
     },
   });
 
-  test('error passed to thenStep', {
+  test("error passed to thenStep", {
     given: {
       context,
       when_step_THROWS_ERROR,
@@ -41,7 +37,7 @@ describe('scenarios > when then', () => {
     },
   });
 
-  test('uncaught error includes step name', {
+  test("uncaught error includes step name", {
     given: {
       context,
       NAMED_when_step_throws_UNCAUGHT_error,
@@ -54,7 +50,7 @@ describe('scenarios > when then', () => {
     },
   });
 
-  test('uncaught error includes step index', {
+  test("uncaught error includes step index", {
     given: {
       context,
       NO_NAME_when_step_throws_UNCAUGHT_error,
@@ -67,7 +63,7 @@ describe('scenarios > when then', () => {
     },
   });
 
-  test('falsy scenario returns', {
+  test("falsy scenario returns", {
     given: {
       context,
       FALSY_scenario,
@@ -80,7 +76,7 @@ describe('scenarios > when then', () => {
     },
   });
 
-  test('arrays', {
+  test("arrays", {
     given: {
       context,
       array_steps,
@@ -97,49 +93,52 @@ describe('scenarios > when then', () => {
   });
 });
 
-type TestContext = Symbol;
+type TestContext = symbol;
 
 type Execution = [TestContext, string];
 
 type Context = {
-  context: TestContext,
-  steps: ScenarioStep<TestContext>,
+  context: TestContext;
+  steps: ScenarioStep<TestContext>;
 
-  executions: Execution[],
+  executions: Execution[];
 };
 
 function steps(this: Context) {
   const executions: Execution[] = [];
 
-  this.steps = [{
-    when: {
-      do_something(this: TestContext) {
-        executions.push([this, 'do_something']);
+  this.steps = [
+    {
+      when: {
+        do_something(this: TestContext) {
+          executions.push([this, "do_something"]);
+        },
+      },
+      then: {
+        assert_something(this: TestContext) {
+          executions.push([this, "assert_something"]);
+        },
+        assert_something_else(this: TestContext) {
+          executions.push([this, "assert_something_else"]);
+        },
       },
     },
-    then: {
-      assert_something(this: TestContext) {
-        executions.push([this, 'assert_something']);
+    {
+      then_when: {
+        do_something_else(this: TestContext) {
+          executions.push([this, "do_something_else"]);
+        },
       },
-      assert_something_else(this: TestContext) {
-        executions.push([this, 'assert_something_else']);
-      },
-    },
-  }, {
-    then_when: {
-      do_something_else(this: TestContext) {
-        executions.push([this, 'do_something_else']);
-      },
-    },
-    then: {
-      assert_another_thing(this: TestContext) {
-        executions.push([this, 'assert_another_thing']);
-      },
-      assert_yet_another_thing(this: TestContext) {
-        executions.push([this, 'assert_yet_another_thing']);
+      then: {
+        assert_another_thing(this: TestContext) {
+          executions.push([this, "assert_another_thing"]);
+        },
+        assert_yet_another_thing(this: TestContext) {
+          executions.push([this, "assert_yet_another_thing"]);
+        },
       },
     },
-  }];
+  ];
 
   this.executions = executions;
 }
@@ -147,66 +146,71 @@ function steps(this: Context) {
 function array_steps(this: Context) {
   const executions: Execution[] = [];
 
-  this.steps = [{
-    when: [
-      function do_something(this: TestContext) {
-        executions.push([this, 'do_something']);
-      },
-    ],
-    then: [
-      function assert_something(this: TestContext) {
-        executions.push([this, 'assert_something']);
-      },
-      function assert_something_else(this: TestContext) {
-        executions.push([this, 'assert_something_else']);
-      },
-    ],
-  }, {
-    then_when: [
-      function do_something_else(this: TestContext) {
-        executions.push([this, 'do_something_else']);
-      },
-    ],
-    then: [
-      function assert_another_thing(this: TestContext) {
-        executions.push([this, 'assert_another_thing']);
-      },
-      function assert_yet_another_thing(this: TestContext) {
-        executions.push([this, 'assert_yet_another_thing']);
-      },
-    ],
-  }];
+  this.steps = [
+    {
+      when: [
+        function do_something(this: TestContext) {
+          executions.push([this, "do_something"]);
+        },
+      ],
+      then: [
+        function assert_something(this: TestContext) {
+          executions.push([this, "assert_something"]);
+        },
+        function assert_something_else(this: TestContext) {
+          executions.push([this, "assert_something_else"]);
+        },
+      ],
+    },
+    {
+      then_when: [
+        function do_something_else(this: TestContext) {
+          executions.push([this, "do_something_else"]);
+        },
+      ],
+      then: [
+        function assert_another_thing(this: TestContext) {
+          executions.push([this, "assert_another_thing"]);
+        },
+        function assert_yet_another_thing(this: TestContext) {
+          executions.push([this, "assert_yet_another_thing"]);
+        },
+      ],
+    },
+  ];
 
   this.executions = executions;
 }
 
 function context(this: Context) {
-  this.context = Symbol.for('context');
+  this.context = Symbol.for("context");
 }
 
 function when_step_THROWS_ERROR(this: Context) {
   const executions: Execution[] = [];
 
-  this.steps = [{
-    when: {
-      do_something(this: TestContext) {
-        throw new Error('oops');
-      },
-    },
-    then: {
-      expect_error(this: TestContext, error: Error) {
-        executions.push([this, `expect_error: ${error.message}`]);
-      },
-      and: {
-        assert_something(this: TestContext) {
-          executions.push([this, 'assert_something']);
-        },
-        assert_something_else(this: TestContext) {
-          executions.push([this, 'assert_something_else']);
+  this.steps = [
+    {
+      when: {
+        do_something(this: TestContext) {
+          throw new Error("oops");
         },
       },
+      then: {
+        expect_error(this: TestContext, error: Error) {
+          executions.push([this, `expect_error: ${error.message}`]);
+        },
+        and: {
+          assert_something(this: TestContext) {
+            executions.push([this, "assert_something"]);
+          },
+          assert_something_else(this: TestContext) {
+            executions.push([this, "assert_something_else"]);
+          },
+        },
+      },
     },
-  }];
+  ];
 
   this.executions = executions;
 }
@@ -214,16 +218,17 @@ function when_step_THROWS_ERROR(this: Context) {
 function NAMED_when_step_throws_UNCAUGHT_error(this: Context) {
   const executions: Execution[] = [];
 
-  this.steps = [{
-    name: 'test step name',
-    when: {
-      do_something(this: TestContext) {
-        throw new Error('oops');
+  this.steps = [
+    {
+      name: "test step name",
+      when: {
+        do_something(this: TestContext) {
+          throw new Error("oops");
+        },
       },
+      then: {},
     },
-    then: {
-    },
-  }];
+  ];
 
   this.executions = executions;
 }
@@ -231,16 +236,17 @@ function NAMED_when_step_throws_UNCAUGHT_error(this: Context) {
 function NO_NAME_when_step_throws_UNCAUGHT_error(this: Context) {
   const executions: Execution[] = [];
 
-  this.steps = [{
-    name: undefined,
-    when: {
-      do_something(this: TestContext) {
-        throw new Error('oops');
+  this.steps = [
+    {
+      name: undefined,
+      when: {
+        do_something(this: TestContext) {
+          throw new Error("oops");
+        },
       },
+      then: {},
     },
-    then: {
-    },
-  }];
+  ];
 
   this.executions = executions;
 }
@@ -250,63 +256,66 @@ function FALSY_scenario(this: Context) {
 }
 
 async function executing_step(this: Context) {
-  await whenThen(
-    this.context,
-    {
-      scenario: this.steps,
-    },
-  );
+  await whenThen(this.context, {
+    scenario: this.steps,
+  });
 }
 
 function WHEN_block_executed(this: Context) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    [Symbol.for('context'), 'do_something'],
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining([[Symbol.for("context"), "do_something"]]),
+  );
 }
 
 function THEN_block_executed(this: Context) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    [Symbol.for('context'), 'assert_something'],
-    [Symbol.for('context'), 'assert_something_else'],
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining([
+      [Symbol.for("context"), "assert_something"],
+      [Symbol.for("context"), "assert_something_else"],
+    ]),
+  );
 }
 
 function WHEN_THEN_block_executed(this: Context) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    [Symbol.for('context'), 'do_something_else'],
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining([[Symbol.for("context"), "do_something_else"]]),
+  );
 }
 
 function WHEN_THEN_THEN_block_executed(this: Context) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    [Symbol.for('context'), 'assert_another_thing'],
-    [Symbol.for('context'), 'assert_yet_another_thing'],
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining([
+      [Symbol.for("context"), "assert_another_thing"],
+      [Symbol.for("context"), "assert_yet_another_thing"],
+    ]),
+  );
 }
 
 function error_passed_to_THEN_block(this: Context) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    [Symbol.for('context'), 'expect_error: oops'],
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining([[Symbol.for("context"), "expect_error: oops"]]),
+  );
 }
 
 function AND_block_executed(this: Context) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    [Symbol.for('context'), 'assert_something'],
-    [Symbol.for('context'), 'assert_something_else'],
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining([
+      [Symbol.for("context"), "assert_something"],
+      [Symbol.for("context"), "assert_something_else"],
+    ]),
+  );
 }
 
 function error_with_STEP_NAME(this: Context, error: Error) {
   expect(error.message).toContain('Error in step "test step name"');
-  expect(error.message).toContain('oops');
+  expect(error.message).toContain("oops");
 }
 
 function error_with_STEP_INDEX(this: Context, error: Error) {
   expect(error.message).toContain('Error in step "0"');
-  expect(error.message).toContain('oops');
+  expect(error.message).toContain("oops");
 }
 
 function scenario_definition(this: Context, error: Error) {
-  expect(error.message).toBe('Expected scenario definition');
+  expect(error.message).toBe("Expected scenario definition");
 }

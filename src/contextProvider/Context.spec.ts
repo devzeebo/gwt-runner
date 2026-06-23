@@ -1,16 +1,12 @@
-import {
-  describe,
-  expect,
-  test as jestTest,
-} from '@jest/globals';
-import gwtRunner from '../gwt';
+import { describe, expect, test as vitestTest } from "vitest";
+import { gwtRunner } from "../gwt";
 
-import Context from './Context';
+import { Context } from "./Context";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('Context', () => {
-  test('parent is optional', {
+describe("Context", () => {
+  test("parent is optional", {
     when: {
       creating_context_WITHOUT_parent,
     },
@@ -19,7 +15,7 @@ describe('Context', () => {
     },
   });
 
-  test('context falls back on parent context', {
+  test("context falls back on parent context", {
     given: {
       context_WITH_parent,
       parent_context_has_value,
@@ -32,7 +28,7 @@ describe('Context', () => {
     },
   });
 
-  test('context hides values in parent context', {
+  test("context hides values in parent context", {
     given: {
       context_WITH_parent,
       parent_context_has_value,
@@ -47,7 +43,7 @@ describe('Context', () => {
     },
   });
 
-  test('get child sets parent', {
+  test("get child sets parent", {
     given: {
       context,
     },
@@ -78,11 +74,11 @@ function context_WITH_parent(this: any) {
 }
 
 function parent_context_has_value(this: any) {
-  this.parent_context.context.value = 'parent';
+  this.parent_context.context.value = "parent";
 }
 
 function setting_context_value(this: any) {
-  this.context.context.value = 'child';
+  this.context.context.value = "child";
 }
 
 function accessing_context_value(this: any) {
@@ -95,15 +91,15 @@ function getting_child_context(this: any) {
 }
 
 function context_value_is_PARENT_VALUE(this: any) {
-  expect(this.result).toBe('parent');
+  expect(this.result).toBe("parent");
 }
 
 function context_value_is_CHILD_VALUE(this: any) {
-  expect(this.result).toBe('child');
+  expect(this.result).toBe("child");
 }
 
 function parent_context_UNCHANGED(this: any) {
-  expect(this.parent_context.context.value).toBe('parent');
+  expect(this.parent_context.context.value).toBe("parent");
 }
 
 function child_context_has_parent(this: any) {

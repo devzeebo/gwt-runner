@@ -1,5 +1,4 @@
-import ContextProvider from './ContextProvider';
+import { ContextProvider } from "./ContextProvider";
+export { ContextProvider } from "./ContextProvider";
 
-const globalContextProvider = new ContextProvider();
-
-export default globalContextProvider;
+export const TestContext: ContextProvider<unknown> = new ContextProvider();

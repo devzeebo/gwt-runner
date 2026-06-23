@@ -1,17 +1,11 @@
-import {
-  test as jestTest,
-  describe,
-  expect,
-} from '@jest/globals';
-import {
-  toLower,
-} from 'lodash/fp';
-import gwtRunner from './gwt';
+import { test as vitestTest, describe, expect } from "vitest";
+import { toLower } from "lodash/fp";
+import { gwtRunner } from "./gwt";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('test context', () => {
-  test('invalid definition throws error', {
+describe("test context", () => {
+  test("invalid definition throws error", {
     given: {
       mock_jest_test_function,
       INVALID_test_case,
@@ -20,7 +14,7 @@ describe('test context', () => {
       executing_test_case,
     },
     then: {
-      expect_error: error_containing('Invalid GWT definition'),
+      expect_error: error_containing("Invalid GWT definition"),
     },
   });
 });
@@ -41,7 +35,7 @@ function INVALID_test_case(this: any) {
 
 // #region whens
 async function executing_test_case(this: any) {
-  await gwtRunner(this.mock_jest_func)('test case', this.gwt_definition);
+  gwtRunner(this.mock_jest_func)("test case", this.gwt_definition);
 }
 // #endregion
 

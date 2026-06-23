@@ -1,15 +1,15 @@
-import type { ThenStep } from '../../types';
-import executeStep from '../executeStep';
-import hasExpectError from './_hasExpectError';
+import type { ThenStep } from "../../types";
+import { executeStep } from "../executeStep";
+import { hasExpectError } from "./_hasExpectError";
 
-export default async <TContext>(
+export const thenStep = async <TContext>(
   context: TContext,
   step: ThenStep<TContext> | undefined,
   error: Error | undefined,
 ) => {
   if (hasExpectError(step)) {
     if (!error) {
-      throw new Error('Expected error to be thrown, but no error was thrown');
+      throw new Error("Expected error to be thrown, but no error was thrown");
     }
 
     // @ts-ignore
@@ -18,7 +18,5 @@ export default async <TContext>(
     throw error;
   }
 
-  await (hasExpectError(step)
-    ? executeStep(context, step.and)
-    : executeStep(context, step));
+  await (hasExpectError(step) ? executeStep(context, step.and) : executeStep(context, step));
 };

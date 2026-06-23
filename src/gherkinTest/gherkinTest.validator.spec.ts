@@ -1,15 +1,11 @@
-import {
-  test as jestTest,
-  expect,
-  describe,
-} from '@jest/globals';
-import gwtRunner from '../gwt';
-import { isGherkinTest } from './gherkinTest';
+import { test as vitestTest, expect, describe } from "vitest";
+import { gwtRunner } from "../gwt";
+import { isGherkinTest } from "./gherkinTest";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('validate definition', () => {
-  test('accepts only given', {
+describe("validate definition", () => {
+  test("accepts only given", {
     given: {
       definition_with_only_GIVEN,
     },
@@ -21,7 +17,7 @@ describe('validate definition', () => {
     },
   });
 
-  test('accepts only when', {
+  test("accepts only when", {
     given: {
       definition_with_only_WHEN,
     },
@@ -33,7 +29,7 @@ describe('validate definition', () => {
     },
   });
 
-  test('accepts only then', {
+  test("accepts only then", {
     given: {
       definition_with_only_THEN,
     },
@@ -45,7 +41,7 @@ describe('validate definition', () => {
     },
   });
 
-  test('accepts all three', {
+  test("accepts all three", {
     given: {
       complete_definition,
     },
@@ -57,7 +53,7 @@ describe('validate definition', () => {
     },
   });
 
-  test('rejects extra keys', {
+  test("rejects extra keys", {
     given: {
       definition_with_EXTRA_KEYS,
     },

@@ -1,25 +1,18 @@
-import {
-  keys,
-  find,
-} from 'lodash/fp';
-import scenarioTest, {
-  isScenarioTest,
-} from './scenarioTest';
-import gherkinTest, {
-  isGherkinTest,
-} from './gherkinTest';
-import type { GivenScenarioTest, GwtDefinition, TestFunction } from '../types';
-import type { GherkinTest } from '../types/gherkin/Gherkin';
-import type { ConfigureTestFunction } from '../types/Gwt';
+import { keys, find, join } from "lodash/fp";
+import { scenarioTest, isScenarioTest } from "./scenarioTest";
+import { gherkinTest, isGherkinTest } from "./gherkinTest";
+import type { GivenScenarioTest, GwtDefinition, TestFunction } from "../types";
+import type { GherkinTest } from "../types/gherkin/Gherkin";
+import type { ConfigureTestFunction } from "../types/Gwt";
 
 type TestType<T extends GwtDefinition<any> = GwtDefinition<any>> = {
-  test: (def: any) => boolean,
+  test: (def: any) => boolean;
   runner: (
     testFunc: TestFunction,
     configureTestFunc: ConfigureTestFunction<any> | undefined,
     name: string,
     gwtDefinition: T,
-  ) => void,
+  ) => void;
 };
 
 const testTypes: Array<TestType<any>> = [
@@ -33,24 +26,18 @@ const testTypes: Array<TestType<any>> = [
   } as TestType<GivenScenarioTest<any>>,
 ];
 
-export default <TContextBase = never>(
-  testFunc: TestFunction,
-  configureTestFunc?: ConfigureTestFunction<TContextBase>,
-) => <TContext>(
-  name: string,
-  gwtDefinition: GwtDefinition<TContext>,
-) => {
-  const testType = find(({ test }) => test(gwtDefinition), testTypes);
+export const gwtRunner =
+  <TContextBase = never>(
+    testFunc: TestFunction,
+    configureTestFunc?: ConfigureTestFunction<TContextBase>,
+  ) =>
+  <TContext>(name: string, gwtDefinition: GwtDefinition<TContext>): void => {
+    const testType = find(({ test }) => test(gwtDefinition), testTypes);
 
-  if (!testType) {
-    throw new Error(`Invalid GWT definition. Valid keys are [given,when,then] or [given,scenario].
-Supplied keys were [${keys(gwtDefinition)}]`);
-  }
+    if (!testType) {
+      throw new Error(`Invalid GWT definition. Valid keys are [given,when,then] or [given,scenario].
+Supplied keys were [${join(",", keys(gwtDefinition))}]`);
+    }
 
-  return testType.runner(
-    testFunc,
-    configureTestFunc,
-    name,
-    gwtDefinition,
-  );
-};
+    return testType.runner(testFunc, configureTestFunc, name, gwtDefinition);
+  };

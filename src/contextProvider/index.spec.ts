@@ -1,14 +1,10 @@
-import {
-  describe,
-  expect,
-  test as jestTest,
-} from '@jest/globals';
-import gwtRunner from '../gwt';
+import { describe, expect, test as vitestTest } from "vitest";
+import { gwtRunner } from "../gwt";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('global context provider', () => {
-  test('returns same instance every time', {
+describe("global context provider", () => {
+  test("returns same instance every time", {
     when: {
       importing_global_context_provider,
       importing_global_context_provider_AGAIN,
@@ -20,13 +16,13 @@ describe('global context provider', () => {
 });
 
 async function importing_global_context_provider(this: any) {
-  import('./index').then((dep) => {
+  await import("./index").then((dep) => {
     this.global_context_provider = dep;
   });
 }
 
 async function importing_global_context_provider_AGAIN(this: any) {
-  import('./index').then((dep) => {
+  await import("./index").then((dep) => {
     this.second_global_context_provider = dep;
   });
 }

@@ -1,6 +1,6 @@
 // istanbul ignore file
-export { default } from './gwt';
-export { default as TestContext } from './contextProvider';
+export { gwtRunner } from "./gwt";
+export { TestContext } from "./contextProvider";
 
 export type {
   GwtDefinition,
@@ -16,4 +16,4 @@ export type {
   ScenarioThenWhenStep,
   ScenarioStep,
   GherkinDefinition,
-} from '../types';
+} from "../types";

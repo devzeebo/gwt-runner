@@ -1,9 +1,7 @@
-import type {
-  GivenScenarioDefinition,
-} from '../../types';
-import whenStep from '../whenStep';
+import type { GivenScenarioDefinition } from "../../types";
+import { whenStep } from "../whenStep";
 
-export default async <TContext>(
+export const executeSimple = async <TContext>(
   context: TContext,
   gwt: GivenScenarioDefinition<TContext>,
 ) => {
@@ -11,7 +9,7 @@ export default async <TContext>(
 
   if (gwt.expect_error) {
     if (!error) {
-      throw new Error('Expected error to be thrown, but no error was thrown');
+      throw new Error("Expected error to be thrown, but no error was thrown");
     }
     // @ts-ignore
     await gwt.expect_error.bind(context)(error);

@@ -1,2 +1,2 @@
 // istanbul ignore file
-export { default } from './thenStep';
+export { thenStep } from "./thenStep";

@@ -1,19 +1,13 @@
-import {
-  describe,
-  expect,
-  test as jestTest,
-} from '@jest/globals';
-import {
-  get,
-} from 'lodash/fp';
-import gwtRunner from '../gwt';
+import { describe, expect, test as vitestTest } from "vitest";
+import { get } from "lodash/fp";
+import { gwtRunner } from "../gwt";
 
-import ContextProvider from './ContextProvider';
+import { ContextProvider } from "./ContextProvider";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('Context Provider', () => {
-  test('spawn context creates new context if empty', {
+describe("Context Provider", () => {
+  test("spawn context creates new context if empty", {
     given: {
       context_provider,
       active_context_IS_FALSY,
@@ -27,7 +21,7 @@ describe('Context Provider', () => {
     },
   });
 
-  test('get context WITHOUT active context', {
+  test("get context WITHOUT active context", {
     given: {
       context_provider,
     },
@@ -39,7 +33,7 @@ describe('Context Provider', () => {
     },
   });
 
-  test('creates child context if context exists', {
+  test("creates child context if context exists", {
     given: {
       context_provider_WITH_active_context,
     },
@@ -52,7 +46,7 @@ describe('Context Provider', () => {
     },
   });
 
-  test('revert context without active context is noop', {
+  test("revert context without active context is noop", {
     given: {
       context_provider,
       active_context_IS_FALSY,
@@ -65,7 +59,7 @@ describe('Context Provider', () => {
     },
   });
 
-  test('revert context selects parent as active context', {
+  test("revert context selects parent as active context", {
     given: {
       context_provider_WITH_active_context,
     },
@@ -89,12 +83,12 @@ function context_provider_WITH_active_context(this: any) {
 }
 
 function spawning_context(this: any) {
-  this.previous_context = get('context_provider.activeContext', this);
+  this.previous_context = get("context_provider.activeContext", this);
   this.context_provider.createContext();
 }
 
 function reverting_context(this: any) {
-  this.previous_context = get('context_provider.activeContext', this);
+  this.previous_context = get("context_provider.activeContext", this);
   this.context_provider.releaseContext();
 }
 
@@ -111,8 +105,8 @@ function active_context_has_NO_parent(this: any) {
 }
 
 function active_context_has_PARENT(this: any) {
-  expect(get('context_provider.activeContext.parent', this)).toBeTruthy();
-  expect(get('context_provider.activeContext.parent', this)).toBe(this.previous_context);
+  expect(get("context_provider.activeContext.parent", this)).toBeTruthy();
+  expect(get("context_provider.activeContext.parent", this)).toBe(this.previous_context);
 }
 
 function active_context_IS_FALSY(this: any) {
@@ -120,8 +114,8 @@ function active_context_IS_FALSY(this: any) {
 }
 
 function active_context_IS_PARENT(this: any) {
-  expect(get('context_provider.activeContext', this)).toBeTruthy();
-  expect(get('context_provider.activeContext', this)).toBe(this.previous_context.parent);
+  expect(get("context_provider.activeContext", this)).toBeTruthy();
+  expect(get("context_provider.activeContext", this)).toBe(this.previous_context.parent);
 }
 
 function value_is_FALSY(this: any) {

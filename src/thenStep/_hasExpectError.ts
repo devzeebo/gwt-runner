@@ -1,7 +1,5 @@
-import type { ThenStep, ThenStepWithExpectError } from '../../types';
+import type { ThenStep, ThenStepWithExpectError } from "../../types";
 
-export default <TContext>(
+export const hasExpectError = <TContext>(
   step: ThenStep<TContext> | undefined,
-): step is ThenStepWithExpectError<TContext> => (
-  !!step && 'expect_error' in step
-);
+): step is ThenStepWithExpectError<TContext> => !!step && "expect_error" in step;

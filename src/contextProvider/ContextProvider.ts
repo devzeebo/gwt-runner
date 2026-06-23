@@ -1,14 +1,14 @@
-import get from 'lodash/get';
-import Context from './Context';
+import get from "lodash/get";
+import { Context } from "./Context";
 
-export default class ContextProvider<T> {
+export class ContextProvider<T> {
   public activeContext?: Context<T>;
 
-  get context() {
+  get context(): Partial<T> | undefined {
     return this.activeContext?.context;
   }
 
-  createContext = () => {
+  public createContext = (): void => {
     if (!this.activeContext) {
       this.activeContext = new Context<T>();
     } else {
@@ -16,7 +16,7 @@ export default class ContextProvider<T> {
     }
   };
 
-  releaseContext = () => {
-    this.activeContext = get(this.activeContext, 'parent');
+  public releaseContext = (): void => {
+    this.activeContext = get(this.activeContext, "parent");
   };
 }

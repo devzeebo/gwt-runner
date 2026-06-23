@@ -1,2 +1,2 @@
 // istanbul ignore file
-export { default, isGherkinTest } from './gherkinTest';
+export { gherkinTest, isGherkinTest } from "./gherkinTest";

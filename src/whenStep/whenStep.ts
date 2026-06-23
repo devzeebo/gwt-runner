@@ -1,7 +1,10 @@
-import type { Step } from '../../types';
-import executeStep from '../executeStep';
+import type { Step } from "../../types";
+import { executeStep } from "../executeStep";
 
-export default async <T>(context: T, step: Step<T> | undefined): Promise<Error | undefined> => {
+export const whenStep = async <T>(
+  context: T,
+  step: Step<T> | undefined,
+): Promise<Error | undefined> => {
   try {
     await executeStep(context, step);
 

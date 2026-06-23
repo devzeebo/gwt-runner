@@ -1,15 +1,11 @@
-import {
-  test as jestTest,
-  expect,
-  describe,
-} from '@jest/globals';
-import gwtRunner from '../gwt';
-import { isScenarioTest } from './scenarioTest';
+import { test as vitestTest, expect, describe } from "vitest";
+import { gwtRunner } from "../gwt";
+import { isScenarioTest } from "./scenarioTest";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('validate definition', () => {
-  test('accepts given scenario', {
+describe("validate definition", () => {
+  test("accepts given scenario", {
     given: {
       definition_with_SCENARIO,
     },
@@ -21,7 +17,7 @@ describe('validate definition', () => {
     },
   });
 
-  test('accepts given scenario and expect error', {
+  test("accepts given scenario and expect error", {
     given: {
       definition_with_SCENARIO_and_EXPECT_ERROR,
     },
@@ -33,7 +29,7 @@ describe('validate definition', () => {
     },
   });
 
-  test('rejects extra keys', {
+  test("rejects extra keys", {
     given: {
       definition_with_EXTRA_KEYS,
     },

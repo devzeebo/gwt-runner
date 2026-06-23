@@ -1,19 +1,12 @@
-import {
-  test as jestTest,
-  describe,
-  expect,
-} from '@jest/globals';
-import {
-  noop,
-  toLower,
-} from 'lodash/fp';
-import gwtRunner from '../gwt';
-import gherkinTest from './gherkinTest';
+import { test as vitestTest, describe, expect, vi } from "vitest";
+import { noop, toLower } from "lodash/fp";
+import { gwtRunner } from "../gwt";
+import { gherkinTest } from "./gherkinTest";
 
-const test = gwtRunner(jestTest);
+const test = gwtRunner(vitestTest);
 
-describe('test context', () => {
-  test('has no expected errors', {
+describe("test context", () => {
+  test("has no expected errors", {
     given: {
       mock_jest_test_function,
       GOOD_test_case,
@@ -28,7 +21,7 @@ describe('test context', () => {
     },
   });
 
-  test('properly handles errors', {
+  test("properly handles errors", {
     given: {
       mock_jest_test_function,
       ERROR_test_case_WITH_expect_error,
@@ -41,7 +34,7 @@ describe('test context', () => {
     },
   });
 
-  test('expected error but no error thrown', {
+  test("expected error but no error thrown", {
     given: {
       mock_jest_test_function,
       GOOD_test_case_WITH_expect_error,
@@ -50,11 +43,11 @@ describe('test context', () => {
       executing_test_case,
     },
     then: {
-      expect_error: error_containing('expected error to be thrown, but no error was thrown'),
+      expect_error: error_containing("expected error to be thrown, but no error was thrown"),
     },
   });
 
-  test('unexpected error', {
+  test("unexpected error", {
     given: {
       mock_jest_test_function,
       ERROR_test_case_WITHOUT_expect_error,
@@ -63,11 +56,11 @@ describe('test context', () => {
       executing_test_case,
     },
     then: {
-      expect_error: error_containing('oops!'),
+      expect_error: error_containing("oops!"),
     },
   });
 
-  test('with configuration', {
+  test("with configuration", {
     given: {
       mock_test_function_WITH_ARGUMENTS,
       configure_test_function,
@@ -91,14 +84,12 @@ function mock_jest_test_function(this: any) {
 }
 
 function mock_test_function_WITH_ARGUMENTS(this: any) {
-  this.mock_jest_func = async (
-    _: string,
-    func: (first: any, second: any) => any,
-  ) => func('first', 'second');
+  this.mock_jest_func = async (_: string, func: (first: any, second: any) => any) =>
+    func("first", "second");
 }
 
 function configure_test_function(this: any) {
-  this.configure_test_fn = jest.fn();
+  this.configure_test_fn = vi.fn();
 }
 
 function GOOD_test_case(this: any) {
@@ -107,26 +98,26 @@ function GOOD_test_case(this: any) {
   this.gwt_definition = {
     given: {
       something() {
-        executions.push('something');
+        executions.push("something");
       },
       something_else() {
-        executions.push('something_else');
+        executions.push("something_else");
       },
     },
     when: {
       something_happens() {
-        executions.push('something_happens');
+        executions.push("something_happens");
       },
       something_else_happens() {
-        executions.push('something_else_happens');
+        executions.push("something_else_happens");
       },
     },
     then: {
       assert_something() {
-        executions.push('assert_something');
+        executions.push("assert_something");
       },
       assert_something_else() {
-        executions.push('assert_something_else');
+        executions.push("assert_something_else");
       },
     },
   };
@@ -140,12 +131,12 @@ function ERROR_test_case_WITH_expect_error(this: any) {
   this.gwt_definition = {
     when: {
       oops() {
-        throw new Error('Oops!');
+        throw new Error("Oops!");
       },
     },
     then: {
       expect_error() {
-        executions.push('expect_error');
+        executions.push("expect_error");
       },
     },
   };
@@ -156,11 +147,10 @@ function ERROR_test_case_WITHOUT_expect_error(this: any) {
   this.gwt_definition = {
     when: {
       oops() {
-        throw new Error('Oops!');
+        throw new Error("Oops!");
       },
     },
-    then: {
-    },
+    then: {},
   };
 }
 function GOOD_test_case_WITH_expect_error(this: any) {
@@ -174,33 +164,26 @@ function GOOD_test_case_WITH_expect_error(this: any) {
 
 // #region whens
 async function executing_test_case(this: any) {
-  await gherkinTest(
-    this.mock_jest_func,
-    this.configure_test_fn,
-    'test case',
-    this.gwt_definition,
-  );
+  await gherkinTest(this.mock_jest_func, this.configure_test_fn, "test case", this.gwt_definition);
 }
 // #endregion
 
 // #region thens
 function all_GIVENS_called(this: any) {
-  expect(this.executions).toEqual(expect.arrayContaining(['something', 'something_else']));
+  expect(this.executions).toEqual(expect.arrayContaining(["something", "something_else"]));
 }
 function all_WHENS_called(this: any) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    'something_happens',
-    'something_else_happens',
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining(["something_happens", "something_else_happens"]),
+  );
 }
 function all_THENS_called(this: any) {
-  expect(this.executions).toEqual(expect.arrayContaining([
-    'assert_something',
-    'assert_something_else',
-  ]));
+  expect(this.executions).toEqual(
+    expect.arrayContaining(["assert_something", "assert_something_else"]),
+  );
 }
 function expect_error_CALLED(this: any) {
-  expect(this.executions).toEqual(expect.arrayContaining(['expect_error']));
+  expect(this.executions).toEqual(expect.arrayContaining(["expect_error"]));
 }
 function error_containing(this: any, message: string) {
   return function (this: any, e: Error) {
@@ -209,10 +192,6 @@ function error_containing(this: any, message: string) {
 }
 
 function configure_called_with_context_and_args(this: any) {
-  expect(this.configure_test_fn).toHaveBeenCalledWith(
-    expect.anything(),
-    'first',
-    'second',
-  );
+  expect(this.configure_test_fn).toHaveBeenCalledWith(expect.anything(), "first", "second");
 }
 // #endregion
