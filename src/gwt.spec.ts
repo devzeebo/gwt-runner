@@ -1,5 +1,4 @@
 import { test as vitestTest, describe, expect } from "vitest";
-import { toLower } from "lodash/fp";
 import { gwtRunner } from "./gwt";
 
 const test = gwtRunner(vitestTest);
@@ -42,7 +41,7 @@ async function executing_test_case(this: any) {
 // #region thens
 function error_containing(this: any, message: string) {
   return function (this: any, e: Error) {
-    expect(toLower(e.message)).toEqual(expect.stringMatching(toLower(message)));
+    expect(e.message.toLowerCase()).toEqual(expect.stringMatching(message.toLowerCase()));
   };
 }
 // #endregion

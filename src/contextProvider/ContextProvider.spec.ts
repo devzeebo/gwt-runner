@@ -1,5 +1,4 @@
 import { describe, expect, test as vitestTest } from "vitest";
-import { get } from "lodash/fp";
 import { gwtRunner } from "../gwt";
 
 import { ContextProvider } from "./ContextProvider";
@@ -83,12 +82,12 @@ function context_provider_WITH_active_context(this: any) {
 }
 
 function spawning_context(this: any) {
-  this.previous_context = get("context_provider.activeContext", this);
+  this.previous_context = this.context_provider.activeContext;
   this.context_provider.createContext();
 }
 
 function reverting_context(this: any) {
-  this.previous_context = get("context_provider.activeContext", this);
+  this.previous_context = this.context_provider.activeContext;
   this.context_provider.releaseContext();
 }
 
@@ -105,8 +104,8 @@ function active_context_has_NO_parent(this: any) {
 }
 
 function active_context_has_PARENT(this: any) {
-  expect(get("context_provider.activeContext.parent", this)).toBeTruthy();
-  expect(get("context_provider.activeContext.parent", this)).toBe(this.previous_context);
+  expect(this.context_provider.activeContext?.parent).toBeTruthy();
+  expect(this.context_provider.activeContext?.parent).toBe(this.previous_context);
 }
 
 function active_context_IS_FALSY(this: any) {
@@ -114,8 +113,8 @@ function active_context_IS_FALSY(this: any) {
 }
 
 function active_context_IS_PARENT(this: any) {
-  expect(get("context_provider.activeContext", this)).toBeTruthy();
-  expect(get("context_provider.activeContext", this)).toBe(this.previous_context.parent);
+  expect(this.context_provider.activeContext).toBeTruthy();
+  expect(this.context_provider.activeContext).toBe(this.previous_context.parent);
 }
 
 function value_is_FALSY(this: any) {

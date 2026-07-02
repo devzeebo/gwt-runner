@@ -1,10 +1,7 @@
-import reduce from "lodash/reduce";
-import values from "lodash/values";
 import type { Step } from "../types";
 
 const executeStep = <T>(context: T, step: Step<T> | undefined) =>
-  reduce(
-    values(step),
+  Object.values(step ?? {}).reduce(
     // @ts-ignore
     (previous, func) => previous.then(() => func.bind(context)()),
     Promise.resolve(),

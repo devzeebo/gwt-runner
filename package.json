@@ -1,6 +1,6 @@
 {
   "name": "gwt-runner",
-  "version": "2.4.1-beta.1",
+  "version": "3.0.0",
   "description": "A small library to help test libraries support given-when-then style testing without a bunch of overhead",
   "keywords": [
     "bdd",
@@ -51,16 +51,12 @@
     "coverage": "wireit",
     "prepublishOnly": "wireit"
   },
-  "dependencies": {
-    "lodash": "^4.17.21"
-  },
   "devDependencies": {
-    "@types/lodash": "^4.17.24",
     "@types/node": "^25.9.3",
     "@vitest/coverage-v8": "^4.1.9",
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.1.24",
+    "vite-plus": "^0.2.1",
     "vitest": "^4.1.9",
     "wireit": "^0.14.12"
   },

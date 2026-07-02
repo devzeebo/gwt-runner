@@ -1,5 +1,4 @@
 import { test as vitestTest, describe, expect, vi } from "vitest";
-import { noop, toLower } from "lodash/fp";
 import { gwtRunner } from "../gwt";
 import { gherkinTest } from "./gherkinTest";
 
@@ -156,7 +155,7 @@ function ERROR_test_case_WITHOUT_expect_error(this: any) {
 function GOOD_test_case_WITH_expect_error(this: any) {
   this.gwt_definition = {
     then: {
-      expect_error: noop,
+      expect_error: () => {},
     },
   };
 }
@@ -187,7 +186,7 @@ function expect_error_CALLED(this: any) {
 }
 function error_containing(this: any, message: string) {
   return function (this: any, e: Error) {
-    expect(toLower(e.message)).toEqual(expect.stringMatching(toLower(message)));
+    expect(e.message.toLowerCase()).toEqual(expect.stringMatching(message.toLowerCase()));
   };
 }
 

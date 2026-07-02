@@ -1,4 +1,3 @@
-import get from "lodash/get";
 import { Context } from "./Context";
 
 export class ContextProvider<T> {
@@ -17,6 +16,6 @@ export class ContextProvider<T> {
   };
 
   public releaseContext = (): void => {
-    this.activeContext = get(this.activeContext, "parent");
+    this.activeContext = this.activeContext?.parent;
   };
 }

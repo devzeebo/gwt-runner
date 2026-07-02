@@ -1,4 +1,3 @@
-import { flow, isEqual, keys, without } from "lodash/fp";
 import type { GivenScenarioTest, GwtDefinition, TestFunction } from "../../types";
 import { executeStep } from "../executeStep";
 import { TestContext } from "../contextProvider";
@@ -10,7 +9,7 @@ import type { ConfigureTestFunction } from "../../types/Gwt";
 export const isScenarioTest = <TContext>(
   test: GwtDefinition<TContext>,
 ): test is GivenScenarioTest<TContext> =>
-  flow(keys, without(["given", "scenario", "expect_error"]), isEqual([]))(test);
+  Object.keys(test).every((key) => ["given", "scenario", "expect_error"].includes(key));
 
 export const scenarioTest = <TContext>(
   testFunc: TestFunction,

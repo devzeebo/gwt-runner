@@ -1,4 +1,3 @@
-import { keys, find, join } from "lodash/fp";
 import { scenarioTest, isScenarioTest } from "./scenarioTest";
 import { gherkinTest, isGherkinTest } from "./gherkinTest";
 import type { GivenScenarioTest, GwtDefinition, TestFunction } from "../types";
@@ -32,11 +31,11 @@ export const gwtRunner =
     configureTestFunc?: ConfigureTestFunction<TContextBase>,
   ) =>
   <TContext>(name: string, gwtDefinition: GwtDefinition<TContext>): void => {
-    const testType = find(({ test }) => test(gwtDefinition), testTypes);
+    const testType = testTypes.find(({ test }) => test(gwtDefinition));
 
     if (!testType) {
       throw new Error(`Invalid GWT definition. Valid keys are [given,when,then] or [given,scenario].
-Supplied keys were [${join(",", keys(gwtDefinition))}]`);
+Supplied keys were [${Object.keys(gwtDefinition).join(",")}]`);
     }
 
     return testType.runner(testFunc, configureTestFunc, name, gwtDefinition);
